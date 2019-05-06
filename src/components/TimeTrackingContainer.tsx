@@ -5,11 +5,14 @@ interface TimeTrackingContainerProps {
     dateLabels: string[]
 }
 
+
 const TimeTrackingContainer: React.FC<TimeTrackingContainerProps> = ({dateLabels}: TimeTrackingContainerProps) => {
+
+
     return (
         <div className="time-tracking-container">
             {
-                dateLabels.map((item, index) => <TimeSlot key={index} dateLabel={item}/>)
+                dateLabels.map((item) => <TimeSlot key={item} dateLabel={item}/>)
             }
         </div>
     )

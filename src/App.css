@@ -26,7 +26,17 @@
   background-color: rgb(239, 239, 239);
   width: 100%;
   text-align: center;
-  padding-top: 20px;
+  padding: 20px 10px;
+}
+
+.time-slot input {
+  width: 80px;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid rgb(200, 200, 200);
+  margin-top: 15px;
+  font-size: 18px;
+  text-align: center;
 }
 
 .time-slot:not(:last-child) {
@@ -40,4 +50,27 @@
 
 .dates-period {
   color: rgb(123, 123, 123);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main-button {
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: bold;
+
+  color: rgb(123, 123, 123);
+  border: 1px solid rgb(200, 200, 200);
+  background-color: rgb(239, 239, 239);
+
+}
+
+.margin-right-20 {
+  margin-right: 20px
 }

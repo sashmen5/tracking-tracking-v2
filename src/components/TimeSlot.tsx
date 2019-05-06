@@ -1,4 +1,30 @@
 import React from 'react';
+import styled from "styled-components";
+
+const Container = styled.div`
+    height: 300px;                       
+    width: 100%;                         
+    text-align: center;                  
+    padding: 20px 10px;       
+    border-radius: ${props => props.theme.borderRadius}; 
+    background-color: rgb(252, 252, 252);
+    color: ${props => props.theme.colors.main};  
+    
+    &:not(:last-child) {
+      margin-right: 18px;
+    }         
+`;
+
+const Input = styled.input`
+    width: 80px;  
+    height: 30px;
+    margin-top: 10px;                           
+    text-align: center;                 
+    border-radius: ${props => props.theme.borderRadius}; 
+    border: ${props => props.theme.border}; 
+    color: ${props => props.theme.colors.secondary};
+    font-weight: ${props => props.theme.fontWeight};           
+`;
 
 interface TimeSlotProps {
     dateLabel: string;
@@ -15,20 +41,23 @@ const TimeSlot: React.FC<TimeSlotProps> = ({dateLabel}: TimeSlotProps) => {
         const {value} = e.target;
         if (!value) {
             setState({amountOfHours: 0});
-        } else {
-            setState({amountOfHours: parseInt(e.target.value)})
+        } else  {
+            const hours = parseInt(value);
+            if (!isNaN(hours)) {
+                setState({amountOfHours: hours})
+            }
         }
     }
 
     return (
-        <div className="time-slot">
+        <Container>
             <div>{dateLabel}</div>
-            <input
+            <Input
                 type="text"
                 value={state.amountOfHours !== 0 ? state.amountOfHours : ''}
                 onChange={e => handleInputChange(e)}
             />
-        </div>
+        </Container>
     )
 };
 

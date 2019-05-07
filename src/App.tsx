@@ -8,6 +8,7 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Login from "./components/Login";
 import Projects from "./components/Projects";
 import WrongRouter from "./components/WrongRouter";
+import Chart from "./components/Chart";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -32,6 +33,7 @@ const App: React.FC = () => {
                         <Route path="/" exact component={Login} />
                         <Route path="/Projects" exact component={Projects} />
                         <Route path="/Projects/:project" exact component={ProjectTracker} />
+                        <Route path="/Chart" exact component={Chart} />
                         <Route component={WrongRouter}/>
                     </Switch>
                 </Content>

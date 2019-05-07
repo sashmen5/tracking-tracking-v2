@@ -22,7 +22,7 @@ const ModalContent = styled.div`
 `;
 
 interface ModalWrapperProps {
-  openModal: boolean
+    openModal: boolean
 }
 
 const ModalWrapper = styled.div<ModalWrapperProps>`

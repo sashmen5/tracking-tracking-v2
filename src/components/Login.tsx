@@ -2,6 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import {Redirect} from "react-router";
 import {Button, Container, SpacedBottomInput, Title} from "./CommontStyledComponents";
+import withLoader from "../HOCs/withLoader";
 
 const LoginContainer = styled(Container)`
   margin: 0 auto;
@@ -13,17 +14,24 @@ const LoginTitle = styled(Title)`
   margin-bottom: 25px;
 `;
 
+const LoginWithLoader = withLoader(LoginContainer);
+
 const Login: React.FC = () => {
     const [email, setEmail] = React.useState<string>('');
     const [password, setPassword] = React.useState<string>('');
     const [toHomePage, setToHomePage] = React.useState<boolean>(false);
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
     const handleLoginClicked = () => {
         if (email !== 'admin' || password !== '1234') {
             return;
         }
 
-        setToHomePage(true);
+        setIsLoading(true);
+        setTimeout(() => {
+            setIsLoading(false);
+            setToHomePage(true);
+        }, 1000)
     };
 
     if (toHomePage) {
@@ -31,7 +39,7 @@ const Login: React.FC = () => {
     }
 
     return (
-        <LoginContainer>
+        <LoginWithLoader isLoading={isLoading}>
             <LoginTitle>Login</LoginTitle>
             <span>Email</span>
             <SpacedBottomInput
@@ -48,7 +56,7 @@ const Login: React.FC = () => {
                 onChange={e => setPassword(e.target.value)}
             />
             <Button onClick={handleLoginClicked}>Login</Button>
-        </LoginContainer>
+        </LoginWithLoader>
     )
 };
 

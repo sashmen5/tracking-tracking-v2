@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
 const Content = styled.div`
   max-width: 1200px;
   margin: 0 auto;      
-  padding-top: 20px;   
+  padding: 20px;   
 `;
 
 const App: React.FC = () => {

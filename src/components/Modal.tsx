@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -20,8 +20,8 @@ const Container = styled.div`
 `;
 
 interface ModalProps {
-    children: any
-    closeModal: any
+    children: ReactElement
+    closeModal: () => void
 }
 
 const Modal: React.FC<ModalProps> = ({children, closeModal}: ModalProps) => {

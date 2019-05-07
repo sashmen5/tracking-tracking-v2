@@ -23,8 +23,8 @@ const DangerousLabel = styled(Label)`
 
 interface ProjectItemProps {
     title: string;
-    handleDeleteProject: any;
-    handleEditProject: any;
+    handleDeleteProject: (title: string) => void;
+    handleEditProject: (title: string) => void;
     project: string;
 }
 

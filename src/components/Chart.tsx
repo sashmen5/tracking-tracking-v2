@@ -3,8 +3,9 @@ import React from 'react';
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
-import {Container} from "./CommontStyledComponents";
+import {Container, Title} from "./CommontStyledComponents";
 import styled from "styled-components";
+import {RouteComponentProps, withRouter} from "react-router";
 
 // This is mock data.
 // Real data will be added after implementation of state manager
@@ -36,26 +37,38 @@ const ChartContainer = styled(Container)`
   align-items: center;
 `;
 
-const Chart: React.FC = () => {
+interface MatchParams {
+    project: string;
+}
+
+interface ChartProps extends RouteComponentProps<MatchParams> {
+}
+
+const Chart: React.FC<ChartProps> = (props: ChartProps) => {
+    const {project} = props.match.params;
+
     return (
-        <ChartContainer>
-            <LineChart
-                width={900}
-                height={500}
-                data={data}
-                margin={{
-                    top: 5, right: 30, left: 20, bottom: 5,
-                }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="Hours" stroke="#8884d8" activeDot={{ r: 8 }} />
-            </LineChart>
-        </ChartContainer>
+        <>
+            <Title>{project} Chart</Title>
+            <ChartContainer>
+                <LineChart
+                    width={900}
+                    height={500}
+                    data={data}
+                    margin={{
+                        top: 5, right: 30, left: 20, bottom: 5,
+                    }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name"/>
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="Hours" stroke="#8884d8" activeDot={{ r: 8 }} />
+                </LineChart>
+            </ChartContainer>
+        </>
     );
 };
 
-export default Chart;
+export default withRouter(Chart);

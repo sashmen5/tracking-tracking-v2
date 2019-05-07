@@ -33,7 +33,7 @@ const App: React.FC = () => {
                         <Route path="/" exact component={Login} />
                         <Route path="/Projects" exact component={Projects} />
                         <Route path="/Projects/:project" exact component={ProjectTracker} />
-                        <Route path="/Chart" exact component={Chart} />
+                        <Route path="/Projects/:project/Chart" exact component={Chart} />
                         <Route component={WrongRouter}/>
                     </Switch>
                 </Content>

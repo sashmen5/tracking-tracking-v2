@@ -1,6 +1,7 @@
 import React from 'react';
 import styled  from 'styled-components';
 import {Button, Title} from "./CommontStyledComponents";
+import {Link, RouteComponentProps, withRouter} from "react-router-dom";
 
 
 
@@ -23,7 +24,11 @@ const SpacedButton = styled(HeaderButton)`
   margin-right: 10px;
 `;
 
-interface HeaderProps {
+interface MatchParams {
+    project: string;
+}
+
+interface HeaderProps extends RouteComponentProps<MatchParams> {
     title: string;
     startDateLabel: string;
     endDateLabel: string;
@@ -31,12 +36,19 @@ interface HeaderProps {
     handlePreviousTimeSlot: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({title, startDateLabel, endDateLabel, handleNextTimeSlot, handlePreviousTimeSlot}: HeaderProps) => {
+const Header: React.FC<HeaderProps> = ({match, title, startDateLabel, endDateLabel, handleNextTimeSlot, handlePreviousTimeSlot}: HeaderProps) => {
+    const {project} = match.params;
+
     return (
             <Container>
                 <div>
                     <Title>{title}</Title>
                     <DatesRange>{startDateLabel} - {endDateLabel}</DatesRange>
+                    <Link to={{pathname: `/Projects/${project}/Chart`}}>
+                        <HeaderButton>
+                            Open Chart
+                        </HeaderButton>
+                    </Link>
                 </div>
                 <div>
                     <SpacedButton
@@ -54,4 +66,4 @@ const Header: React.FC<HeaderProps> = ({title, startDateLabel, endDateLabel, han
     )
 };
 
-export default Header;
+export default withRouter(Header);

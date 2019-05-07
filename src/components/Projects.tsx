@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ProjectItem from "./ProjectItem";
 import Modal from "./Modal";
 import {Button, Container, SpacedBottomInput, Title} from "./CommontStyledComponents";
+import withLoader from "../HOCs/withLoader";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -43,12 +44,15 @@ const ProjectsButton = styled(Button)`
   margin-bottom: 50px;
 `;
 
+const LoadingModalContentWrapper = withLoader(ModalContent);
+
 const Projects: React.FC = () => {
     const [projects, setProjects] = React.useState<string[]>(['Thailand', 'Wix', 'Facebook', 'Apple']);
     const [projectLabel, setProjectLabel] = React.useState<string>('');
     const [openModal, setOpenModal] = React.useState<boolean>(false);
     const [editMode, setEditMode] = React.useState<boolean>(false);
     const [preEditedProject, setPreEditedProject] = React.useState<string>('');
+    const [savingProject, setSavingProject] = React.useState<boolean>(false);
     const inputEl = React.useRef<HTMLInputElement>(null);
 
 
@@ -57,6 +61,7 @@ const Projects: React.FC = () => {
             return
         }
 
+        setSavingProject(true);
         if (editMode) {
             const index: number = projects.indexOf(preEditedProject);
             setProjects([
@@ -72,14 +77,19 @@ const Projects: React.FC = () => {
             setProjects([...projects, projectLabel]);
         }
 
-        setProjectLabel('');
-        setOpenModal(false);
+
+        //This 'setTimeout' required only to show that loader works. (Mock functionality)
+        setTimeout(() => {
+            setProjectLabel('');
+            setSavingProject(false);
+            setOpenModal(false);
+        }, 1000);
     };
 
     const handleDeleteProject = (projectLabel: string) => {
         const newProjects: string[] = projects.filter(item => item !== projectLabel);
         setProjects(newProjects);
-    }
+    };
 
     const handleEditProject = (projectLabel: string) => {
         setProjectLabel(projectLabel);
@@ -125,7 +135,7 @@ const Projects: React.FC = () => {
 
             <ModalWrapper openModal={openModal}>
                 <Modal closeModal={() => setOpenModal(false)}>
-                    <ModalContent>
+                    <LoadingModalContentWrapper isLoading={savingProject}>
                         <Label>Add new project</Label>
                         <span>Project label</span>
                         <SpacedBottomInput
@@ -136,10 +146,10 @@ const Projects: React.FC = () => {
                             onChange={e => setProjectLabel(e.target.value)}
                         />
                         <Button onClick={handleSaveProjectClicked}>Save</Button>
-                    </ModalContent>
+                    </LoadingModalContentWrapper>
                 </Modal>
             </ModalWrapper>
         </>
     )
-}
+};
 export default Projects;

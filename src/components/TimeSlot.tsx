@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
+import {Input} from "./CommontStyledComponents";
 
 const Container = styled.div`
     height: 300px;                       
@@ -7,7 +8,7 @@ const Container = styled.div`
     text-align: center;                  
     padding: 20px 10px;       
     border-radius: ${props => props.theme.borderRadius}; 
-    background-color: rgb(252, 252, 252);
+    background-color: ${props => props.theme.colors.backgroundContainer};
     color: ${props => props.theme.colors.main};  
     
     &:not(:last-child) {
@@ -15,15 +16,8 @@ const Container = styled.div`
     }         
 `;
 
-const Input = styled.input`
-    width: 80px;  
-    height: 30px;
-    margin-top: 10px;                           
-    text-align: center;                 
-    border-radius: ${props => props.theme.borderRadius}; 
-    border: ${props => props.theme.border}; 
-    color: ${props => props.theme.colors.secondary};
-    font-weight: ${props => props.theme.fontWeight};           
+const TimeSlotInput = styled(Input)`
+  width: 80px;
 `;
 
 interface TimeSlotProps {
@@ -52,7 +46,7 @@ const TimeSlot: React.FC<TimeSlotProps> = ({dateLabel}: TimeSlotProps) => {
     return (
         <Container>
             <div>{dateLabel}</div>
-            <Input
+            <TimeSlotInput
                 type="text"
                 value={state.amountOfHours !== 0 ? state.amountOfHours : ''}
                 onChange={e => handleInputChange(e)}

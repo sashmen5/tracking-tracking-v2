@@ -4,6 +4,7 @@ import ProjectItem from "./ProjectItem";
 import Modal from "./Modal";
 import {Button, Container, SpacedBottomInput, Title} from "./CommontStyledComponents";
 import withLoader from "../HOCs/withLoader";
+import { TiThLarge, TiThMenu } from "react-icons/ti";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -36,13 +37,23 @@ const Label = styled.div`
 
 const ButtonWrapper = styled.div`
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
 `;
 
 const ProjectsButton = styled(Button)`
   width: 100px;
-  margin-bottom: 50px;
 `;
+
+const Icons = styled.div`
+  color: ${props => props.theme.colors.secondary};
+  font-size: 30px;
+  width: 70px;
+  display: flex;
+  justify-content: space-between;
+ `;
+
 
 const LoadingModalContentWrapper = withLoader(ModalContent);
 
@@ -112,6 +123,10 @@ const Projects: React.FC = () => {
             <Title>Projects</Title>
             <Wrapper>
                 <ButtonWrapper>
+                    <Icons>
+                        <TiThLarge/>
+                        <TiThMenu/>
+                    </Icons>
                     <ProjectsButton onClick={e => handleOpenModal()}>Add project</ProjectsButton>
                 </ButtonWrapper>
                 <Container>

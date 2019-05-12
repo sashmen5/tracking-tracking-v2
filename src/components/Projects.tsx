@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from "styled-components";
-import ProjectItem from "./ProjectItem";
-import Modal from "./Modal";
+
 import {Button, Container, SpacedBottomInput, Title} from "./CommontStyledComponents";
+
+import Modal from "./Modal";
+import ProjectItem from "./ProjectItem";
 import withLoader from "../HOCs/withLoader";
 
 const Wrapper = styled.div`

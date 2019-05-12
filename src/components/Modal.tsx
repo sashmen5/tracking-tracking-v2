@@ -1,5 +1,5 @@
 import React, {ReactElement} from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Container = styled.div`
     display: flex;
@@ -33,6 +33,5 @@ const Modal: React.FC<ModalProps> = ({children, closeModal}: ModalProps) => {
         </Container>
     )
 };
-
 
 export default Modal;

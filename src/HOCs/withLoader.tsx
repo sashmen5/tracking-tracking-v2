@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
 import Spinner from 'react-spinner-material';
-import {JSX} from "@babel/types";
+import {JSX} from '@babel/types';
 
 const Container = styled.div`
   position: relative;

@@ -1,11 +1,9 @@
 import React from 'react';
+import styled from 'styled-components';
+import {RouteComponentProps, withRouter} from 'react-router';
+import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
 
-import {
-    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-} from 'recharts';
 import {Container, Title} from "./CommontStyledComponents";
-import styled from "styled-components";
-import {RouteComponentProps, withRouter} from "react-router";
 
 // This is mock data.
 // Real data will be added after implementation of state manager

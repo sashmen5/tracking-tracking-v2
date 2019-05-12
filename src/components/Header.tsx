@@ -1,9 +1,8 @@
 import React from 'react';
 import styled  from 'styled-components';
-import {Button, Title} from "./CommontStyledComponents";
-import {Link, RouteComponentProps, withRouter} from "react-router-dom";
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom';
 
-
+import {Button, Title} from './CommontStyledComponents';
 
 const DatesRange = styled.div`
   color: ${props => props.theme.colors.secondary}

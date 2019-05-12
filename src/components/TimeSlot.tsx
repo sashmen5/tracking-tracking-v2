@@ -1,6 +1,7 @@
 import React from 'react';
-import styled from "styled-components";
-import {Input} from "./CommontStyledComponents";
+import styled from 'styled-components';
+
+import {Input} from './CommontStyledComponents';
 
 const Container = styled.div`
     height: 300px;                       
@@ -47,7 +48,7 @@ const TimeSlot: React.FC<TimeSlotProps> = ({dateLabel}: TimeSlotProps) => {
         <Container>
             <div>{dateLabel}</div>
             <TimeSlotInput
-                type="text"
+                type='text'
                 value={state.amountOfHours !== 0 ? state.amountOfHours : ''}
                 onChange={e => handleInputChange(e)}
             />

@@ -1,13 +1,13 @@
 import React from 'react';
-import './App.css';
-import styled, {createGlobalStyle, ThemeProvider} from "styled-components";
-import {mainTheme} from "./MainTheme";
-import ProjectTracker from "./components/ProjectTracker";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import styled, {createGlobalStyle, ThemeProvider} from "styled-components";
+
+import {mainTheme} from "./MainTheme";
 
 import Login from "./components/Login";
 import Projects from "./components/Projects";
 import WrongRouter from "./components/WrongRouter";
+import ProjectTracker from "./components/ProjectTracker";
 import Chart from "./components/Chart";
 
 const GlobalStyle = createGlobalStyle`

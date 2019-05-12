@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {ReactElement, useState} from 'react';
 import styled from "styled-components";
 import ProjectItem from "./ProjectItem";
 import Modal from "./Modal";
 import {Button, Container, SpacedBottomInput, Title} from "./CommontStyledComponents";
 import withLoader from "../HOCs/withLoader";
-import { TiThLarge, TiThMenu } from "react-icons/ti";
+import {TiThLarge, TiThMenu} from "react-icons/ti";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -23,7 +23,7 @@ const ModalContent = styled.div`
 `;
 
 interface ModalWrapperProps {
-    openModal: boolean
+  openModal: boolean
 }
 
 const ModalWrapper = styled.div<ModalWrapperProps>`
@@ -54,117 +54,152 @@ const Icons = styled.div`
   justify-content: space-between;
  `;
 
+const GridContainer = styled(Container)`
+    display: grid;
+    column-gap: 10px;
+    grid-template-columns: repeat(3, 180px);
+    grid-auto-rows: 180px;
+`;
+
+type ViewType = 'ROWS' | 'GRID';
 
 const LoadingModalContentWrapper = withLoader(ModalContent);
 
 const Projects: React.FC = () => {
-    const [projects, setProjects] = React.useState<string[]>(['Thailand', 'Wix', 'Facebook', 'Apple']);
-    const [projectLabel, setProjectLabel] = React.useState<string>('');
-    const [openModal, setOpenModal] = React.useState<boolean>(false);
-    const [editMode, setEditMode] = React.useState<boolean>(false);
-    const [preEditedProject, setPreEditedProject] = React.useState<string>('');
-    const [savingProject, setSavingProject] = React.useState<boolean>(false);
-    const inputEl = React.useRef<HTMLInputElement>(null);
+  const [projects, setProjects] = React.useState<string[]>(['Thailand', 'Wix', 'Facebook', 'Apple']);
+  const [projectLabel, setProjectLabel] = React.useState<string>('');
+  const [openModal, setOpenModal] = React.useState<boolean>(false);
+  const [editMode, setEditMode] = React.useState<boolean>(false);
+  const [preEditedProject, setPreEditedProject] = React.useState<string>('');
+  const [savingProject, setSavingProject] = React.useState<boolean>(false);
+  const [projectsViewType, setProjectsViewType] = useState<ViewType>('GRID');
+  const inputEl = React.useRef<HTMLInputElement>(null);
 
 
-    const handleSaveProjectClicked = () => {
-        if (!projectLabel) {
-            return
+  const handleSaveProjectClicked = () => {
+    if (!projectLabel) {
+      return
+    }
+
+    setSavingProject(true);
+    if (editMode) {
+      const index: number = projects.indexOf(preEditedProject);
+      setProjects([
+        ...projects.slice(0, index),
+        projectLabel,
+        ...projects.slice(index + 1)
+      ]);
+
+      setEditMode(false);
+      setPreEditedProject('');
+
+    } else {
+      setProjects([...projects, projectLabel]);
+    }
+
+
+    //This 'setTimeout' required only to show that loader works. (Mock functionality)
+    setTimeout(() => {
+      setProjectLabel('');
+      setSavingProject(false);
+      setOpenModal(false);
+    }, 1000);
+  };
+
+  const handleDeleteProject = (projectLabel: string) => {
+    const newProjects: string[] = projects.filter(item => item !== projectLabel);
+    setProjects(newProjects);
+  };
+
+  const handleEditProject = (projectLabel: string) => {
+    setProjectLabel(projectLabel);
+    setPreEditedProject(projectLabel);
+    setEditMode(true);
+    handleOpenModal();
+  };
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+    requestAnimationFrame(() => {
+      if (inputEl && inputEl.current) {
+        inputEl.current.focus()
+      }
+    })
+  };
+
+  const renderProjectItems = (itemsDirection: string) => (
+      projects.length
+          ?
+          projects.map((project, index) =>
+              <ProjectItem
+                  itemsDirection={itemsDirection}
+                  key={`${index}${project}`}
+                  title={project}
+                  project={project}
+                  handleDeleteProject={handleDeleteProject}
+                  handleEditProject={handleEditProject}
+              />
+          )
+          :
+          <h3>Please add project</h3>
+  );
+
+  const listView = () => (
+      <Container>
+        {
+          renderProjectItems('row')
         }
+      </Container>
+  );
 
-        setSavingProject(true);
-        if (editMode) {
-            const index: number = projects.indexOf(preEditedProject);
-            setProjects([
-                ...projects.slice(0, index),
-                projectLabel,
-                ...projects.slice(index + 1)
-            ]);
-
-            setEditMode(false);
-            setPreEditedProject('');
-
-        } else {
-            setProjects([...projects, projectLabel]);
+  const gridView = () => (
+      <GridContainer>
+        {
+          renderProjectItems('column')
         }
+      </GridContainer>
+  );
 
+  const itemsView = projectsViewType === 'GRID' ? gridView : listView;
 
-        //This 'setTimeout' required only to show that loader works. (Mock functionality)
-        setTimeout(() => {
-            setProjectLabel('');
-            setSavingProject(false);
-            setOpenModal(false);
-        }, 1000);
-    };
-
-    const handleDeleteProject = (projectLabel: string) => {
-        const newProjects: string[] = projects.filter(item => item !== projectLabel);
-        setProjects(newProjects);
-    };
-
-    const handleEditProject = (projectLabel: string) => {
-        setProjectLabel(projectLabel);
-        setPreEditedProject(projectLabel);
-        setEditMode(true);
-        handleOpenModal();
-    };
-
-    const handleOpenModal = () => {
-        setOpenModal(true);
-        requestAnimationFrame(() => {
-            if (inputEl && inputEl.current) {
-                inputEl.current.focus()
+  return (
+      <>
+        <Title>Projects</Title>
+        <Wrapper>
+          <ButtonWrapper>
+            <Icons>
+              <TiThMenu onClick={() => setProjectsViewType('ROWS')}/>
+              <TiThLarge onClick={() => setProjectsViewType('GRID')}/>
+            </Icons>
+            <ProjectsButton onClick={e => handleOpenModal()}>Add project</ProjectsButton>
+          </ButtonWrapper>
+          <ProjectItems>
+            {
+              itemsView
             }
-        })
-    };
+          </ProjectItems>
+        </Wrapper>
 
-    return (
-        <>
-            <Title>Projects</Title>
-            <Wrapper>
-                <ButtonWrapper>
-                    <Icons>
-                        <TiThLarge/>
-                        <TiThMenu/>
-                    </Icons>
-                    <ProjectsButton onClick={e => handleOpenModal()}>Add project</ProjectsButton>
-                </ButtonWrapper>
-                <Container>
-                    {
-                        projects.length
-                            ?
-                            projects.map((project, index) =>
-                                <ProjectItem
-                                    key={`${index}${project}`}
-                                    title={project}
-                                    project={project}
-                                    handleDeleteProject={handleDeleteProject}
-                                    handleEditProject={handleEditProject}
-                                />
-                            )
-                            :
-                            <h3>Please add project</h3>
-                    }
-                </Container>
-            </Wrapper>
-
-            <ModalWrapper openModal={openModal}>
-                <Modal closeModal={() => setOpenModal(false)}>
-                    <LoadingModalContentWrapper isLoading={savingProject}>
-                        <Label>Add new project</Label>
-                        <span>Project label</span>
-                        <SpacedBottomInput
-                            type="text"
-                            name="projectLabel"
-                            value={projectLabel}
-                            ref={inputEl}
-                            onChange={e => setProjectLabel(e.target.value)}
-                        />
-                        <Button onClick={handleSaveProjectClicked}>Save</Button>
-                    </LoadingModalContentWrapper>
-                </Modal>
-            </ModalWrapper>
-        </>
-    )
+        <ModalWrapper openModal={openModal}>
+          <Modal closeModal={() => setOpenModal(false)}>
+            <LoadingModalContentWrapper isLoading={savingProject}>
+              <Label>Add new project</Label>
+              <span>Project label</span>
+              <SpacedBottomInput
+                  type="text"
+                  name="projectLabel"
+                  value={projectLabel}
+                  ref={inputEl}
+                  onChange={e => setProjectLabel(e.target.value)}
+              />
+              <Button onClick={handleSaveProjectClicked}>Save</Button>
+            </LoadingModalContentWrapper>
+          </Modal>
+        </ModalWrapper>
+      </>
+  )
 };
+
 export default Projects;
+
+const ProjectItems: React.FC<{ children: () => ReactElement }> = (props) => props.children();

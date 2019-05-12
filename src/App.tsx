@@ -31,9 +31,9 @@ const App: React.FC = () => {
                     <GlobalStyle/>
                     <Switch>
                         <Route path="/" exact component={Login} />
-                        <Route path="/Projects" exact component={Projects} />
-                        <Route path="/Projects/:project" exact component={ProjectTracker} />
-                        <Route path="/Projects/:project/Chart" exact component={Chart} />
+                        <Route path="/projects" exact component={Projects} />
+                        <Route path="/projects/:project" exact component={ProjectTracker} />
+                        <Route path="/projects/:project/chart" exact component={Chart} />
                         <Route component={WrongRouter}/>
                     </Switch>
                 </Content>

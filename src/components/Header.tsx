@@ -43,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({match, title, startDateLabel, endDateLab
                 <div>
                     <Title>{title}</Title>
                     <DatesRange>{startDateLabel} - {endDateLabel}</DatesRange>
-                    <Link to={{pathname: `/Projects/${project}/Chart`}}>
+                    <Link to={{pathname: `/projects/${project}/chart`}}>
                         <HeaderButton>
                             Open Chart
                         </HeaderButton>

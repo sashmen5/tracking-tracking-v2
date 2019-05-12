@@ -36,7 +36,7 @@ const StyledLink = styled(Link)`
 const ProjectItem: React.FC<ProjectItemProps> = ({title, project, handleDeleteProject, handleEditProject}: ProjectItemProps) => {
     return (
         <Container>
-            <StyledLink to={{pathname: `Projects/${project}`}}>{title}</StyledLink>
+            <StyledLink to={{pathname: `projects/${project}`}}>{title}</StyledLink>
             <div>
                 <Label onClick={() => handleEditProject(title)}>Edit</Label>
                 <span> | </span>

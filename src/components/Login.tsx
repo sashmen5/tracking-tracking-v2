@@ -36,7 +36,7 @@ const Login: React.FC = () => {
     };
 
     if (toHomePage) {
-        return <Redirect push to='/Projects' />
+        return <Redirect push to='/projects' />
     }
 
     return (

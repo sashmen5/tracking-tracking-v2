@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 
@@ -34,7 +34,7 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 
-const ProjectItem: React.FC<ProjectItemProps> = ({project, handleDeleteProject, handleEditProject}: ProjectItemProps) => {
+const ProjectItem: FC<ProjectItemProps> = ({project, handleDeleteProject, handleEditProject}: ProjectItemProps) => {
     const {id} = project;
     return (
         <Container>

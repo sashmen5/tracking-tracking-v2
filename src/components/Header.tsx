@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import styled  from 'styled-components';
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom';
 
@@ -35,7 +35,7 @@ interface HeaderProps extends RouteComponentProps<MatchParams> {
     handlePreviousTimeSlot: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({match, title, startDateLabel, endDateLabel, handleNextTimeSlot, handlePreviousTimeSlot}: HeaderProps) => {
+const Header: FC<HeaderProps> = ({match, title, startDateLabel, endDateLabel, handleNextTimeSlot, handlePreviousTimeSlot}: HeaderProps) => {
     const {project} = match.params;
 
     return (

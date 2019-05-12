@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import styled from 'styled-components';
 import {RouteComponentProps, withRouter} from 'react-router';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
@@ -42,7 +42,7 @@ interface MatchParams {
 interface ChartProps extends RouteComponentProps<MatchParams> {
 }
 
-const Chart: React.FC<ChartProps> = (props: ChartProps) => {
+const Chart: FC<ChartProps> = (props: ChartProps) => {
     const {project} = props.match.params;
 
     return (

@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {FC, useRef, useState} from 'react';
 import styled from "styled-components";
 
 import {Button, Container, SpacedBottomInput, Title} from "./CommontStyledComponents";
@@ -62,7 +62,7 @@ const startProjects: Project[] = [
     {id: 4, label: 'Apple'}
 ];
 
-const Projects: React.FC = () => {
+const Projects: FC = () => {
     const [projects, setProjects] = useState<Project[]>(startProjects);
     const [projectLabel, setProjectLabel] = useState<string>('');
     const [openModal, setOpenModal] = useState<boolean>(false);

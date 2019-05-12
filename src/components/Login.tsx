@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC, useState} from 'react';
 import styled from 'styled-components';
 import {Redirect} from 'react-router';
 
@@ -17,11 +17,11 @@ const LoginTitle = styled(Title)`
 
 const LoginWithLoader = withLoader(LoginContainer);
 
-const Login: React.FC = () => {
-    const [email, setEmail] = React.useState<string>('');
-    const [password, setPassword] = React.useState<string>('');
-    const [toHomePage, setToHomePage] = React.useState<boolean>(false);
-    const [isLoading, setIsLoading] = React.useState<boolean>(false);
+const Login: FC = () => {
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [toHomePage, setToHomePage] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleLoginClicked = () => {
         if (email !== 'admin' || password !== '1234') {

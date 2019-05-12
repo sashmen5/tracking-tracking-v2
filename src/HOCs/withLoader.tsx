@@ -1,7 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import styled from 'styled-components';
 import Spinner from 'react-spinner-material';
-import {JSX} from '@babel/types';
 
 const Container = styled.div`
   position: relative;
@@ -39,7 +38,7 @@ const withLoader = (WrappedComponent: FunctionComponent) => ({isLoading, ...prop
                             size={50}
                             spinnerColor={"rgb(131, 49, 244)"}
                             spinnerWidth={4}
-                            visible={true}
+                            visible
                         />
                     </SpinnerWrapper>
                 </>

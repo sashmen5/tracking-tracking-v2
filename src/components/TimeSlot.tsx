@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, FC, useState} from 'react';
 import styled from 'styled-components';
 
 import {Input} from './CommontStyledComponents';
@@ -25,10 +25,10 @@ interface TimeSlotProps {
     dateLabel: string;
 }
 
-const TimeSlot: React.FC<TimeSlotProps> = ({dateLabel}: TimeSlotProps) => {
+const TimeSlot: FC<TimeSlotProps> = ({dateLabel}: TimeSlotProps) => {
     const [amountOfHours, setAmountOfHoursState] = useState<number>(0);
 
-    function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
         const {value} = e.target;
         if (!value) {
             setAmountOfHoursState(0);

@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {FC, useState} from 'react';
 import styled from 'styled-components';
 import {RouteComponentProps, withRouter} from 'react-router';
 
@@ -34,8 +34,8 @@ interface MatchParams {
 interface TimeTrackingProps extends RouteComponentProps<MatchParams> {
 }
 
-const ProjectTracker: React.FC<TimeTrackingProps> = (props: TimeTrackingProps) => {
-    const [date, setDate] = React.useState<TimeTrackingState>({startDate: new Date()});
+const ProjectTracker: FC<TimeTrackingProps> = (props: TimeTrackingProps) => {
+    const [date, setDate] = useState<TimeTrackingState>({startDate: new Date()});
     const {startDate, endDate} = getCalendarDates(date.startDate);
     const dateLabels: string[] = getDateLabels(startDate);
     const startDateLabel: string = formatFullDate(startDate);
@@ -48,7 +48,7 @@ const ProjectTracker: React.FC<TimeTrackingProps> = (props: TimeTrackingProps) =
     };
 
     return (
-        <Fragment>
+        <>
             <Header
                 title='Time tracking'
                 startDateLabel={startDateLabel}
@@ -62,7 +62,7 @@ const ProjectTracker: React.FC<TimeTrackingProps> = (props: TimeTrackingProps) =
                     dateLabels.map((item) => <TimeSlot key={item} dateLabel={item}/>)
                 }
             </TimeTrackingContainer>
-        </Fragment>
+        </>
     );
 };
 

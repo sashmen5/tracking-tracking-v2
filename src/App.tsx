@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import styled, {createGlobalStyle, ThemeProvider} from "styled-components";
 
@@ -23,7 +23,7 @@ const Content = styled.div`
   padding: 20px;   
 `;
 
-const App: React.FC = () => {
+const App: FC = () => {
     return (
         <Router>
             <ThemeProvider theme={mainTheme}>

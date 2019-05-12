@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import styled from "styled-components";
 
 import {Button, Container, SpacedBottomInput, Title} from "./CommontStyledComponents";
@@ -48,14 +48,28 @@ const ProjectsButton = styled(Button)`
 
 const LoadingModalContentWrapper = withLoader(ModalContent);
 
+let nextProjectId: number = 4;
+
+export interface Project {
+    id: number;
+    label: string;
+}
+
+const startProjects: Project[] = [
+    {id: 1, label: 'Thailand'},
+    {id: 2, label: 'Wix'},
+    {id: 3, label: 'Facebook'},
+    {id: 4, label: 'Apple'}
+];
+
 const Projects: React.FC = () => {
-    const [projects, setProjects] = React.useState<string[]>(['Thailand', 'Wix', 'Facebook', 'Apple']);
-    const [projectLabel, setProjectLabel] = React.useState<string>('');
-    const [openModal, setOpenModal] = React.useState<boolean>(false);
-    const [editMode, setEditMode] = React.useState<boolean>(false);
-    const [preEditedProject, setPreEditedProject] = React.useState<string>('');
-    const [savingProject, setSavingProject] = React.useState<boolean>(false);
-    const inputEl = React.useRef<HTMLInputElement>(null);
+    const [projects, setProjects] = useState<Project[]>(startProjects);
+    const [projectLabel, setProjectLabel] = useState<string>('');
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [editMode, setEditMode] = useState<boolean>(false);
+    const [preEditedProject, setPreEditedProject] = useState<Project | null>(null);
+    const [savingProject, setSavingProject] = useState<boolean>(false);
+    const inputEl = useRef<HTMLInputElement>(null);
 
 
     const handleSaveProjectClicked = () => {
@@ -65,18 +79,22 @@ const Projects: React.FC = () => {
 
         setSavingProject(true);
         if (editMode) {
-            const index: number = projects.indexOf(preEditedProject);
+            const index: number = projects.findIndex(item => item.id === preEditedProject!.id);
             setProjects([
                 ...projects.slice(0, index),
-                projectLabel,
+                {id: projects[index].id, label: projectLabel},
                 ...projects.slice(index + 1)
             ]);
 
             setEditMode(false);
-            setPreEditedProject('');
+            setPreEditedProject(null);
 
         } else {
-            setProjects([...projects, projectLabel]);
+            const newProject: Project = {
+              id: ++nextProjectId,
+              label: projectLabel
+            };
+            setProjects([...projects, newProject]);
         }
 
 
@@ -88,14 +106,14 @@ const Projects: React.FC = () => {
         }, 1000);
     };
 
-    const handleDeleteProject = (projectLabel: string) => {
-        const newProjects: string[] = projects.filter(item => item !== projectLabel);
+    const handleDeleteProject = (projectId: number) => {
+        const newProjects: Project[] = projects.filter(item => item.id !== projectId);
         setProjects(newProjects);
     };
 
-    const handleEditProject = (projectLabel: string) => {
+    const handleEditProject = (project: Project) => {
         setProjectLabel(projectLabel);
-        setPreEditedProject(projectLabel);
+        setPreEditedProject(project);
         setEditMode(true);
         handleOpenModal();
     };
@@ -120,10 +138,9 @@ const Projects: React.FC = () => {
                     {
                         projects.length
                             ?
-                            projects.map((project, index) =>
+                            projects.map((project: Project) =>
                                 <ProjectItem
-                                    key={`${index}${project}`}
-                                    title={project}
+                                    key={`${project.id}`}
                                     project={project}
                                     handleDeleteProject={handleDeleteProject}
                                     handleEditProject={handleEditProject}

@@ -1,19 +1,68 @@
-import React from 'react';
+import React, {FC} from 'react';
+import styled  from 'styled-components';
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom';
 
-interface HeaderProps {
+import {Button, Title} from './CommontStyledComponents';
+
+const DatesRange = styled.div`
+  color: ${props => props.theme.colors.secondary}
+`;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+const HeaderButton = styled(Button)`
+  width: 100px;
+`;
+
+const SpacedButton = styled(HeaderButton)`
+  margin-right: 10px;
+`;
+
+interface MatchParams {
+    project: string;
+}
+
+interface HeaderProps extends RouteComponentProps<MatchParams> {
     title: string;
     startDateLabel: string;
     endDateLabel: string;
+    handleNextTimeSlot: () => void;
+    handlePreviousTimeSlot: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({title, startDateLabel, endDateLabel}: HeaderProps) => {
+const Header: FC<HeaderProps> = ({match, title, startDateLabel, endDateLabel, handleNextTimeSlot, handlePreviousTimeSlot}: HeaderProps) => {
+    const {project} = match.params;
 
     return (
-        <div className="margin-bottom">
-            <div className="title">{title}</div>
-            <div className="dates-period">{startDateLabel} - {endDateLabel}</div>
-        </div>
+            <Container>
+                <div>
+                    <Title>{title}</Title>
+                    <DatesRange>{startDateLabel} - {endDateLabel}</DatesRange>
+                    <Link to={{pathname: `/projects/${project}/chart`}}>
+                        <HeaderButton>
+                            Open Chart
+                        </HeaderButton>
+                    </Link>
+                </div>
+                <div>
+                    <SpacedButton
+                        onClick={handlePreviousTimeSlot}
+                    >
+                        Previous
+                    </SpacedButton>
+                    <HeaderButton
+                        onClick={handleNextTimeSlot}
+                    >
+                        Next
+                    </HeaderButton>
+                </div>
+            </Container>
     )
 };
 
-export default Header;
+export default withRouter(Header);

@@ -1,11 +1,10 @@
 const daysRange: number = 8;
 const months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-export const getCalendarDates: () => {startDate: Date, endDate: Date} = () => {
-  const startDate: Date = new Date();
-  const endDate: Date = addDays(startDate, daysRange - 1);
+export const getCalendarDates: (startDate: Date) => {startDate: Date, endDate: Date} = (startDate) => {
+    const endDate: Date = addDays(startDate, daysRange - 1);
 
-  return {startDate, endDate}
+    return {startDate, endDate}
 };
 
 export const formatFullDate: (date: Date) => string = (date) => {
@@ -29,7 +28,7 @@ export const getDateLabels: (startDate: Date) => string[] = (startDate) => {
     return result;
 };
 
-const addDays: (date: Date, daysToAdd: number) => Date = (date, daysToAdd) => {
+export const addDays: (date: Date, daysToAdd: number) => Date = (date, daysToAdd) => {
     const result: Date = new Date(date);
     result.setDate(result.getDate() + daysToAdd);
     return result;

@@ -4,7 +4,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
-  text-align: center;
   
   border-radius: ${prop => prop.theme.borderRadius};
   background-color: ${props => props.theme.colors.backgroundContainer};

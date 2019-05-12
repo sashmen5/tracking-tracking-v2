@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 
 import {Input} from './CommontStyledComponents';
@@ -25,21 +25,17 @@ interface TimeSlotProps {
     dateLabel: string;
 }
 
-interface TimeSlotState {
-    amountOfHours: number;
-}
-
 const TimeSlot: React.FC<TimeSlotProps> = ({dateLabel}: TimeSlotProps) => {
-    const [state, setState] = React.useState<TimeSlotState>({amountOfHours: 0});
+    const [amountOfHours, setAmountOfHoursState] = useState<number>(0);
 
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
         const {value} = e.target;
         if (!value) {
-            setState({amountOfHours: 0});
+            setAmountOfHoursState(0);
         } else  {
             const hours = parseInt(value);
             if (!isNaN(hours)) {
-                setState({amountOfHours: hours})
+                setAmountOfHoursState(hours)
             }
         }
     }
@@ -49,7 +45,7 @@ const TimeSlot: React.FC<TimeSlotProps> = ({dateLabel}: TimeSlotProps) => {
             <div>{dateLabel}</div>
             <TimeSlotInput
                 type='text'
-                value={state.amountOfHours !== 0 ? state.amountOfHours : ''}
+                value={amountOfHours !== 0 ? amountOfHours : ''}
                 onChange={e => handleInputChange(e)}
             />
         </Container>

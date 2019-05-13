@@ -73,7 +73,7 @@ const Projects: FC = () => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [preEditedProject, setPreEditedProject] = useState<string>('');
   const [savingProject, setSavingProject] = useState<boolean>(false);
-  const [projectsViewType, setProjectsViewType] = useState<ViewType>('GRID');
+  const [projectsViewType, setProjectsViewType] = useState<ViewType>('ROWS');
   const inputEl = useRef<HTMLInputElement>(null);
 
 

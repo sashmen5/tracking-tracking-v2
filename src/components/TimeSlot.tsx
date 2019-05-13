@@ -25,21 +25,18 @@ interface TimeSlotProps {
     dateLabel: string;
 }
 
-interface TimeSlotState {
-    amountOfHours: number;
-}
 
 const TimeSlot: FC<TimeSlotProps> = ({dateLabel}: TimeSlotProps) => {
-    const [state, setState] = useState<TimeSlotState>({amountOfHours: 0});
+    const [amountOfHours, setAmountOfHours] = useState<number>(0);
 
     function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
         const {value} = e.target;
         if (!value) {
-            setState({amountOfHours: 0});
+            setAmountOfHours(0);
         } else  {
             const hours = parseInt(value);
             if (!isNaN(hours)) {
-                setState({amountOfHours: hours})
+                setAmountOfHours(hours);
             }
         }
     }
@@ -49,7 +46,7 @@ const TimeSlot: FC<TimeSlotProps> = ({dateLabel}: TimeSlotProps) => {
             <div>{dateLabel}</div>
             <TimeSlotInput
                 type='text'
-                value={state.amountOfHours !== 0 ? state.amountOfHours : ''}
+                value={amountOfHours !== 0 ? amountOfHours : ''}
                 onChange={e => handleInputChange(e)}
             />
         </Container>

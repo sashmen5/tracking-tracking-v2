@@ -35,16 +35,16 @@ interface TimeTrackingProps extends RouteComponentProps<MatchParams> {
 }
 
 const ProjectTracker: FC<TimeTrackingProps> = (props: TimeTrackingProps) => {
-    const [state, setState] = useState<TimeTrackingState>({startDate: new Date()});
-    const {startDate, endDate} = getCalendarDates(state.startDate);
+    const [date, setDate] = useState<TimeTrackingState>({startDate: new Date()});
+    const {startDate, endDate} = getCalendarDates(date.startDate);
     const dateLabels: string[] = getDateLabels(startDate);
     const startDateLabel: string = formatFullDate(startDate);
     const endDateLabel: string = formatFullDate(endDate);
     const {project} = props.match.params;
 
     const handleChangeTimeSlot = (daysToAdd: number) => {
-        const newStartDate = addDays(state.startDate, daysToAdd);
-        setState({startDate: newStartDate});
+        const newStartDate = addDays(date.startDate, daysToAdd);
+        setDate({startDate: newStartDate});
     };
 
     return (

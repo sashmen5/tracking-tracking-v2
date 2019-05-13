@@ -42,7 +42,7 @@ const StyledLink = styled(Link)`
 const ProjectItem: FC<ProjectItemProps> = ({title, project, handleDeleteProject, handleEditProject, itemsDirection}: ProjectItemProps) => {
     return (
         <Container flexDirection={itemsDirection}>
-            <StyledLink to={{pathname: `Projects/${project}`}}>{title}</StyledLink>
+            <StyledLink to={{pathname: `projects/${project}`}}>{title}</StyledLink>
             <div>
                 <Label onClick={() => handleEditProject(title)}>Edit</Label>
                 <span> | </span>

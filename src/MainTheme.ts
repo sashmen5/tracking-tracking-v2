@@ -1,4 +1,4 @@
-import {MainTheme} from "styled-components";
+import {MainTheme} from 'styled-components';
 
 const mainTheme: MainTheme = {
     borderRadius: '7px',

@@ -1,14 +1,16 @@
-import React from 'react';
-import './App.css';
-import styled, {createGlobalStyle, ThemeProvider} from "styled-components";
-import {mainTheme} from "./MainTheme";
-import ProjectTracker from "./components/ProjectTracker";
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import React, {FC} from 'react';
+import styled, {createGlobalStyle, ThemeProvider} from 'styled-components';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
-import Login from "./components/Login";
-import Projects from "./components/Projects";
-import WrongRouter from "./components/WrongRouter";
-import Chart from "./components/Chart";
+import {mainTheme} from './MainTheme';
+
+import Login from './components/Login';
+import Projects from './components/Projects';
+import WrongRouter from './components/WrongRouter';
+import Chart from './components/Chart';
+import ProjectTracker from './components/ProjectTracker';
+
+import './App.css';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -23,17 +25,17 @@ const Content = styled.div`
   padding: 20px;   
 `;
 
-const App: React.FC = () => {
+const App: FC = () => {
     return (
         <Router>
             <ThemeProvider theme={mainTheme}>
                 <Content>
                     <GlobalStyle/>
                     <Switch>
-                        <Route path="/" exact component={Login} />
-                        <Route path="/Projects" exact component={Projects} />
-                        <Route path="/Projects/:project" exact component={ProjectTracker} />
-                        <Route path="/Projects/:project/Chart" exact component={Chart} />
+                        <Route path='/' exact component={Login} />
+                        <Route path='/projects' exact component={Projects} />
+                        <Route path='/projects/:project' exact component={ProjectTracker} />
+                        <Route path='/projects/:project/chart' exact component={Chart} />
                         <Route component={WrongRouter}/>
                     </Switch>
                 </Content>

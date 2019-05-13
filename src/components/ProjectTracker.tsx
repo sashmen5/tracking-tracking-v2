@@ -1,9 +1,12 @@
-import React, {Fragment} from 'react';
-import Header from "./Header";
-import {addDays, formatFullDate, getCalendarDates, getDateLabels} from "../DateUtils";
-import styled from "styled-components";
-import TimeSlot from "./TimeSlot";
-import {RouteComponentProps, withRouter} from "react-router";
+import React, {FC, Fragment, useState} from 'react';
+import {RouteComponentProps, withRouter} from 'react-router';
+import styled from 'styled-components';
+
+import {addDays, formatFullDate, getCalendarDates, getDateLabels} from '../DateUtils';
+
+import TimeSlot from './TimeSlot';
+import Header from './Header';
+
 
 const TimeTrackingContainer = styled.div`
     padding: 30px 0;                        
@@ -31,8 +34,8 @@ interface MatchParams {
 interface TimeTrackingProps extends RouteComponentProps<MatchParams> {
 }
 
-const ProjectTracker: React.FC<TimeTrackingProps> = (props: TimeTrackingProps) => {
-    const [state, setState] = React.useState<TimeTrackingState>({startDate: new Date()});
+const ProjectTracker: FC<TimeTrackingProps> = (props: TimeTrackingProps) => {
+    const [state, setState] = useState<TimeTrackingState>({startDate: new Date()});
     const {startDate, endDate} = getCalendarDates(state.startDate);
     const dateLabels: string[] = getDateLabels(startDate);
     const startDateLabel: string = formatFullDate(startDate);
@@ -47,7 +50,7 @@ const ProjectTracker: React.FC<TimeTrackingProps> = (props: TimeTrackingProps) =
     return (
         <Fragment>
             <Header
-                title="Time tracking"
+                title='Time tracking'
                 startDateLabel={startDateLabel}
                 endDateLabel={endDateLabel}
                 handleNextTimeSlot={() => handleChangeTimeSlot(1)}

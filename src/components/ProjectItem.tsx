@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from "styled-components";
-import {Link} from "react-router-dom";
+import React, {FC} from 'react';
+import styled from 'styled-components';
+import {Link} from 'react-router-dom';
 
 interface ContainerProps {
   flexDirection: string;
@@ -39,7 +39,7 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 
-const ProjectItem: React.FC<ProjectItemProps> = ({title, project, handleDeleteProject, handleEditProject, itemsDirection}: ProjectItemProps) => {
+const ProjectItem: FC<ProjectItemProps> = ({title, project, handleDeleteProject, handleEditProject, itemsDirection}: ProjectItemProps) => {
     return (
         <Container flexDirection={itemsDirection}>
             <StyledLink to={{pathname: `Projects/${project}`}}>{title}</StyledLink>

@@ -1,9 +1,8 @@
-import React from 'react';
+import React, {FC} from 'react';
 import styled  from 'styled-components';
-import {Button, Title} from "./CommontStyledComponents";
-import {Link, RouteComponentProps, withRouter} from "react-router-dom";
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom';
 
-
+import {Button, Title} from './CommontStyledComponents';
 
 const DatesRange = styled.div`
   color: ${props => props.theme.colors.secondary}
@@ -36,7 +35,7 @@ interface HeaderProps extends RouteComponentProps<MatchParams> {
     handlePreviousTimeSlot: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({match, title, startDateLabel, endDateLabel, handleNextTimeSlot, handlePreviousTimeSlot}: HeaderProps) => {
+const Header: FC<HeaderProps> = ({match, title, startDateLabel, endDateLabel, handleNextTimeSlot, handlePreviousTimeSlot}: HeaderProps) => {
     const {project} = match.params;
 
     return (
@@ -44,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({match, title, startDateLabel, endDateLab
                 <div>
                     <Title>{title}</Title>
                     <DatesRange>{startDateLabel} - {endDateLabel}</DatesRange>
-                    <Link to={{pathname: `/Projects/${project}/Chart`}}>
+                    <Link to={{pathname: `/projects/${project}/chart`}}>
                         <HeaderButton>
                             Open Chart
                         </HeaderButton>

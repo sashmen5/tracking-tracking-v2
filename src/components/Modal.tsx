@@ -1,5 +1,5 @@
-import React, {ReactElement} from 'react';
-import styled from "styled-components";
+import React, {FC, ReactElement} from 'react';
+import styled from 'styled-components';
 
 const Container = styled.div`
     display: flex;
@@ -24,7 +24,7 @@ interface ModalProps {
     closeModal: () => void
 }
 
-const Modal: React.FC<ModalProps> = ({children, closeModal}: ModalProps) => {
+const Modal: FC<ModalProps> = ({children, closeModal}: ModalProps) => {
     return (
         <Container onClick={() => closeModal()}>
             <div onClick={e => e.stopPropagation()}>

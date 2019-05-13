@@ -1,10 +1,11 @@
-import React, {ReactElement, useState} from 'react';
-import styled from "styled-components";
-import ProjectItem from "./ProjectItem";
-import Modal from "./Modal";
-import {Button, Container, SpacedBottomInput, Title} from "./CommontStyledComponents";
-import withLoader from "../HOCs/withLoader";
-import {TiThLarge, TiThMenu} from "react-icons/ti";
+import React, {FC, ReactElement, useRef, useState} from 'react';
+import styled from 'styled-components';
+import {TiThLarge, TiThMenu} from 'react-icons/ti';
+
+import {Button, Container, SpacedBottomInput, Title} from './CommontStyledComponents';
+import ProjectItem from './ProjectItem';
+import Modal from './Modal';
+import withLoader from '../HOCs/withLoader';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -65,21 +66,24 @@ type ViewType = 'ROWS' | 'GRID';
 
 const LoadingModalContentWrapper = withLoader(ModalContent);
 
-const Projects: React.FC = () => {
-  const [projects, setProjects] = React.useState<string[]>(['Thailand', 'Wix', 'Facebook', 'Apple']);
-  const [projectLabel, setProjectLabel] = React.useState<string>('');
-  const [openModal, setOpenModal] = React.useState<boolean>(false);
-  const [editMode, setEditMode] = React.useState<boolean>(false);
-  const [preEditedProject, setPreEditedProject] = React.useState<string>('');
-  const [savingProject, setSavingProject] = React.useState<boolean>(false);
+const Projects: FC = () => {
+  const [projects, setProjects] = useState<string[]>(['Thailand', 'Wix', 'Facebook', 'Apple']);
+  const [projectLabel, setProjectLabel] = useState<string>('');
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [preEditedProject, setPreEditedProject] = useState<string>('');
+  const [savingProject, setSavingProject] = useState<boolean>(false);
   const [projectsViewType, setProjectsViewType] = useState<ViewType>('GRID');
-  const inputEl = React.useRef<HTMLInputElement>(null);
+  const inputEl = useRef<HTMLInputElement>(null);
 
 
   const handleSaveProjectClicked = () => {
     if (!projectLabel) {
       return
     }
+
+    const index: number = projects.findIndex(project => project.toLowerCase() === projectLabel.toLowerCase());
+    if (index !== -1) return;
 
     setSavingProject(true);
     if (editMode) {
@@ -186,8 +190,8 @@ const Projects: React.FC = () => {
               <Label>Add new project</Label>
               <span>Project label</span>
               <SpacedBottomInput
-                  type="text"
-                  name="projectLabel"
+                  type='text'
+                  name='projectLabel'
                   value={projectLabel}
                   ref={inputEl}
                   onChange={e => setProjectLabel(e.target.value)}
@@ -202,4 +206,4 @@ const Projects: React.FC = () => {
 
 export default Projects;
 
-const ProjectItems: React.FC<{ children: () => ReactElement }> = (props) => props.children();
+const ProjectItems: FC<{ children: () => ReactElement }> = (props) => props.children();

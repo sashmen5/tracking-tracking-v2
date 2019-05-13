@@ -1,6 +1,7 @@
-import React from 'react';
-import styled from "styled-components";
-import {Input} from "./CommontStyledComponents";
+import React, {ChangeEvent, FC, useState} from 'react';
+import styled from 'styled-components';
+
+import {Input} from './CommontStyledComponents';
 
 const Container = styled.div`
     height: 300px;                       
@@ -28,10 +29,10 @@ interface TimeSlotState {
     amountOfHours: number;
 }
 
-const TimeSlot: React.FC<TimeSlotProps> = ({dateLabel}: TimeSlotProps) => {
-    const [state, setState] = React.useState<TimeSlotState>({amountOfHours: 0});
+const TimeSlot: FC<TimeSlotProps> = ({dateLabel}: TimeSlotProps) => {
+    const [state, setState] = useState<TimeSlotState>({amountOfHours: 0});
 
-    function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
         const {value} = e.target;
         if (!value) {
             setState({amountOfHours: 0});
@@ -47,7 +48,7 @@ const TimeSlot: React.FC<TimeSlotProps> = ({dateLabel}: TimeSlotProps) => {
         <Container>
             <div>{dateLabel}</div>
             <TimeSlotInput
-                type="text"
+                type='text'
                 value={state.amountOfHours !== 0 ? state.amountOfHours : ''}
                 onChange={e => handleInputChange(e)}
             />

@@ -1,8 +1,9 @@
-import React from 'react';
-import styled from "styled-components";
-import {Redirect} from "react-router";
-import {Button, Container, SpacedBottomInput, Title} from "./CommontStyledComponents";
-import withLoader from "../HOCs/withLoader";
+import React, {FC, useState} from 'react';
+import styled from 'styled-components';
+import {Redirect} from 'react-router';
+
+import {Button, Container, SpacedBottomInput, Title} from './CommontStyledComponents';
+import withLoader from '../HOCs/withLoader';
 
 const LoginContainer = styled(Container)`
   margin: 0 auto;
@@ -16,11 +17,11 @@ const LoginTitle = styled(Title)`
 
 const LoginWithLoader = withLoader(LoginContainer);
 
-const Login: React.FC = () => {
-    const [email, setEmail] = React.useState<string>('');
-    const [password, setPassword] = React.useState<string>('');
-    const [toHomePage, setToHomePage] = React.useState<boolean>(false);
-    const [isLoading, setIsLoading] = React.useState<boolean>(false);
+const Login: FC = () => {
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [toHomePage, setToHomePage] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleLoginClicked = () => {
         if (email !== 'admin' || password !== '1234') {
@@ -43,15 +44,15 @@ const Login: React.FC = () => {
             <LoginTitle>Login</LoginTitle>
             <span>Email</span>
             <SpacedBottomInput
-                type="email"
-                name="email"
+                type='email'
+                name='email'
                 value={email}
                 onChange={e => setEmail(e.target.value)}
             />
             <span>Password</span>
             <SpacedBottomInput
-                type="password"
-                name="password"
+                type='password'
+                name='password'
                 value={password}
                 onChange={e => setPassword(e.target.value)}
             />

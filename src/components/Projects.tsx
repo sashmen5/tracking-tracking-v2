@@ -1,11 +1,17 @@
 import React, {FC, useRef, useState} from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
+// @ts-ignore
+import {useSelector, useDispatch} from 'react-redux';
 
-import {Button, Container, SpacedBottomInput, Title} from "./CommontStyledComponents";
+import {Keyed, Project} from '../models';
 
-import Modal from "./Modal";
-import ProjectItem from "./ProjectItem";
-import withLoader from "../HOCs/withLoader";
+import {AppState} from '../store/reducers';
+import {actions} from '../store/actions';
+
+import {Button, Container, SpacedBottomInput, Title} from './CommontStyledComponents';
+import Modal from './Modal';
+import ProjectItem from './ProjectItem';
+import withLoader from '../HOCs/withLoader';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -48,26 +54,13 @@ const ProjectsButton = styled(Button)`
 
 const LoadingModalContentWrapper = withLoader(ModalContent);
 
-let nextProjectId: number = 4;
-
-export interface Project {
-    id: number;
-    label: string;
-}
-
-const startProjects: Project[] = [
-    {id: 1, label: 'Thailand'},
-    {id: 2, label: 'Wix'},
-    {id: 3, label: 'Facebook'},
-    {id: 4, label: 'Apple'}
-];
-
 const Projects: FC = () => {
-    const [projects, setProjects] = useState<Project[]>(startProjects);
+    const reduxProjects: Keyed<Project> = useSelector((state: AppState) => state.projects);
+    const dispatch = useDispatch();
+
+    const [editProjectId, setEditProjectId] = useState<number | null>(null);
     const [projectLabel, setProjectLabel] = useState<string>('');
     const [openModal, setOpenModal] = useState<boolean>(false);
-    const [editMode, setEditMode] = useState<boolean>(false);
-    const [preEditedProject, setPreEditedProject] = useState<Project | null>(null);
     const [savingProject, setSavingProject] = useState<boolean>(false);
     const inputEl = useRef<HTMLInputElement>(null);
 
@@ -78,23 +71,11 @@ const Projects: FC = () => {
         }
 
         setSavingProject(true);
-        if (editMode) {
-            const index: number = projects.findIndex(item => item.id === preEditedProject!.id);
-            setProjects([
-                ...projects.slice(0, index),
-                {id: projects[index].id, label: projectLabel},
-                ...projects.slice(index + 1)
-            ]);
-
-            setEditMode(false);
-            setPreEditedProject(null);
-
+        if (editProjectId) {
+            dispatch(actions.editProject(editProjectId, projectLabel));
+            setEditProjectId(null);
         } else {
-            const newProject: Project = {
-              id: ++nextProjectId,
-              label: projectLabel
-            };
-            setProjects([...projects, newProject]);
+            dispatch(actions.addProject(projectLabel));
         }
 
 
@@ -103,18 +84,17 @@ const Projects: FC = () => {
             setProjectLabel('');
             setSavingProject(false);
             setOpenModal(false);
-        }, 1000);
+        }, 100);
     };
 
     const handleDeleteProject = (projectId: number) => {
-        const newProjects: Project[] = projects.filter(item => item.id !== projectId);
-        setProjects(newProjects);
+        dispatch(actions.deleteProject(projectId));
     };
 
-    const handleEditProject = (project: Project) => {
+    const handleEditProject = (id: number) => {
+        const projectLabel: string = reduxProjects[id].label;
         setProjectLabel(projectLabel);
-        setPreEditedProject(project);
-        setEditMode(true);
+        setEditProjectId(id);
         handleOpenModal();
     };
 
@@ -127,6 +107,8 @@ const Projects: FC = () => {
         })
     };
 
+    const projectKeys: string[] = Object.keys(reduxProjects);
+
     return (
         <>
             <Title>Projects</Title>
@@ -136,12 +118,12 @@ const Projects: FC = () => {
                 </ButtonWrapper>
                 <Container>
                     {
-                        projects.length
+                        projectKeys.length
                             ?
-                            projects.map((project: Project) =>
+                            projectKeys.map((key: string) =>
                                 <ProjectItem
-                                    key={`${project.id}`}
-                                    project={project}
+                                    key={`${reduxProjects[key].id}`}
+                                    project={reduxProjects[key]}
                                     handleDeleteProject={handleDeleteProject}
                                     handleEditProject={handleEditProject}
                                 />
@@ -158,8 +140,8 @@ const Projects: FC = () => {
                         <Label>Add new project</Label>
                         <span>Project label</span>
                         <SpacedBottomInput
-                            type="text"
-                            name="projectLabel"
+                            type='text'
+                            name='projectLabel'
                             value={projectLabel}
                             ref={inputEl}
                             onChange={e => setProjectLabel(e.target.value)}

@@ -1,7 +1,10 @@
-import React, {ChangeEvent, FC, useState} from 'react';
+import React, {ChangeEvent, FC} from 'react';
 import styled from 'styled-components';
+// @ts-ignore
+import {useDispatch} from "react-redux";
 
 import {Input} from './CommontStyledComponents';
+import {actions} from "../store/actions";
 
 const Container = styled.div`
     height: 300px;                       
@@ -23,19 +26,21 @@ const TimeSlotInput = styled(Input)`
 
 interface TimeSlotProps {
     dateLabel: string;
+    projectId: string | number;
+    amountOfHours: string | null;
 }
 
-const TimeSlot: FC<TimeSlotProps> = ({dateLabel}: TimeSlotProps) => {
-    const [amountOfHours, setAmountOfHoursState] = useState<number>(0);
+const TimeSlot: FC<TimeSlotProps> = ({projectId, dateLabel, amountOfHours}: TimeSlotProps) => {
+    const dispatch = useDispatch();
 
     function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
         const {value} = e.target;
         if (!value) {
-            setAmountOfHoursState(0);
+            dispatch(actions.deleteTimeTracker(projectId, dateLabel));
         } else  {
             const hours = parseInt(value);
             if (!isNaN(hours)) {
-                setAmountOfHoursState(hours)
+                dispatch(actions.editTimeTracker(projectId, dateLabel, value));
             }
         }
     }
@@ -45,7 +50,7 @@ const TimeSlot: FC<TimeSlotProps> = ({dateLabel}: TimeSlotProps) => {
             <div>{dateLabel}</div>
             <TimeSlotInput
                 type='text'
-                value={amountOfHours !== 0 ? amountOfHours : ''}
+                value={amountOfHours ? amountOfHours : ''}
                 onChange={e => handleInputChange(e)}
             />
         </Container>

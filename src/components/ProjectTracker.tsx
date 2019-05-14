@@ -2,18 +2,18 @@ import React, {FC} from 'react';
 import styled from 'styled-components';
 import {RouteComponentProps, withRouter} from 'react-router';
 // @ts-ignore
-import {useSelector} from "react-redux";
+import {useSelector} from 'react-redux';
 
 import {
   fullRangeDateLabelSelector,
   fullRangeTimeSlots,
   headerDateLabelSelector,
   projectLabelSelector
-} from "../selectors";
+} from '../selectors';
 
-import {AppState} from "../store/reducers";
+import {AppState} from '../store/reducers';
 
-import {DayTimeStat, Keyed} from "../models";
+import {DayTimeStat, Keyed} from '../models';
 
 import TimeSlot from './TimeSlot';
 import Header from './Header';
@@ -24,6 +24,7 @@ const TimeTrackingContainer = styled.div`
     flex-direction: row;                  
     justify-content: space-between;       
     align-content: stretch;    
+    overflow: auto;
     border-radius: ${props => props.theme.borderRadius};
 `;
 

@@ -5,8 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { Keyed, Project } from "models";
 
-import { AppState } from "../store/reducers";
-import { addProject, deleteProject, editProject } from "../store/actions";
+import { AppState } from "store/reducers";
+import { addProject, deleteProject, editProject } from "store/actions";
 
 import {
   Button,
@@ -16,6 +16,7 @@ import {
 } from "./CommontStyledComponents";
 
 import Modal from "./Modal";
+
 import ProjectItem from "./ProjectItem";
 import withLoader from "../HOCs/withLoader";
 

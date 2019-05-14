@@ -1,24 +1,24 @@
-import React, { FC, useRef, useState } from "react";
-import styled from "styled-components";
+import React, { FC, useRef, useState } from 'react';
+import styled from 'styled-components';
 // @ts-ignore
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 
-import { Keyed, Project } from "models";
+import { Keyed, Project } from 'models';
 
-import { AppState } from "store/reducers";
-import { addProject, deleteProject, editProject } from "store/actions";
+import { AppState } from 'store/reducers';
+import { addProject, deleteProject, editProject } from 'store/actions';
 
 import {
   Button,
   Container,
   SpacedBottomInput,
   Title
-} from "./CommontStyledComponents";
+} from './CommontStyledComponents';
 
-import Modal from "./Modal";
+import Modal from './Modal';
 
-import ProjectItem from "./ProjectItem";
-import withLoader from "../HOCs/withLoader";
+import ProjectItem from './ProjectItem';
+import withLoader from '../HOCs/withLoader';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -41,7 +41,7 @@ interface ModalWrapperProps {
 }
 
 const ModalWrapper = styled.div<ModalWrapperProps>`
-  visibility: ${props => (props.openModal ? "" : "hidden")};
+  visibility: ${props => (props.openModal ? '' : 'hidden')};
 `;
 
 const Label = styled.div`
@@ -68,7 +68,7 @@ const Projects: FC = () => {
   const dispatch = useDispatch();
 
   const [editProjectId, setEditProjectId] = useState<number | null>(null);
-  const [projectLabel, setProjectLabel] = useState<string>("");
+  const [projectLabel, setProjectLabel] = useState<string>('');
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [savingProject, setSavingProject] = useState<boolean>(false);
   const inputEl = useRef<HTMLInputElement>(null);
@@ -88,7 +88,7 @@ const Projects: FC = () => {
 
     //This 'setTimeout' required only to show that loader works. (Mock functionality)
     setTimeout(() => {
-      setProjectLabel("");
+      setProjectLabel('');
       setSavingProject(false);
       setOpenModal(false);
     }, 100);

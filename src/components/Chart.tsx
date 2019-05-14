@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {RouteComponentProps, withRouter} from 'react-router';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
 
-import {Container, Title} from "./CommontStyledComponents";
+import {Container, Title} from './CommontStyledComponents';
 
 // This is mock data.
 // Real data will be added after implementation of state manager
@@ -57,12 +57,12 @@ const Chart: FC<ChartProps> = (props: ChartProps) => {
                         top: 5, right: 30, left: 20, bottom: 5,
                     }}
                 >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name"/>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='name'/>
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="Hours" stroke="#8884d8" activeDot={{ r: 8 }} />
+                    <Line type='monotone' dataKey='Hours' stroke='#8884d8' activeDot={{ r: 8 }} />
                 </LineChart>
             </ChartContainer>
         </>

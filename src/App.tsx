@@ -1,14 +1,14 @@
 import React, {FC} from 'react';
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import styled, {createGlobalStyle, ThemeProvider} from "styled-components";
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import styled, {createGlobalStyle, ThemeProvider} from 'styled-components';
 
-import {mainTheme} from "./MainTheme";
+import {mainTheme} from './MainTheme';
 
-import Login from "./components/Login";
-import Projects from "./components/Projects";
-import WrongRouter from "./components/WrongRouter";
-import ProjectTracker from "./components/ProjectTracker";
-import Chart from "./components/Chart";
+import Login from './components/Login';
+import Projects from './components/Projects';
+import WrongRouter from './components/WrongRouter';
+import ProjectTracker from './components/ProjectTracker';
+import Chart from './components/Chart';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -30,10 +30,10 @@ const App: FC = () => {
                 <Content>
                     <GlobalStyle/>
                     <Switch>
-                        <Route path="/" exact component={Login} />
-                        <Route path="/projects" exact component={Projects} />
-                        <Route path="/projects/:project" exact component={ProjectTracker} />
-                        <Route path="/projects/:project/chart" exact component={Chart} />
+                        <Route path='/' exact component={Login} />
+                        <Route path='/projects' exact component={Projects} />
+                        <Route path='/projects/:project' exact component={ProjectTracker} />
+                        <Route path='/projects/:project/chart' exact component={Chart} />
                         <Route component={WrongRouter}/>
                     </Switch>
                 </Content>

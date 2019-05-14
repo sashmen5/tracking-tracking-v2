@@ -36,7 +36,7 @@ const withLoader = (WrappedComponent: FunctionComponent) => ({isLoading, ...prop
                     <SpinnerWrapper>
                         <Spinner
                             size={50}
-                            spinnerColor={"rgb(131, 49, 244)"}
+                            spinnerColor={'rgb(131, 49, 244)'}
                             spinnerWidth={4}
                             visible
                         />

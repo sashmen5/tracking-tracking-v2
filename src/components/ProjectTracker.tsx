@@ -1,11 +1,19 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
 import styled from 'styled-components';
 import {RouteComponentProps, withRouter} from 'react-router';
 
-import {addDays, formatFullDate, getCalendarDates, getDateLabels} from '../DateUtils';
-
 import TimeSlot from './TimeSlot';
 import Header from './Header';
+import {DayTimeStat, Keyed} from "../models";
+// @ts-ignore
+import {useSelector} from "react-redux";
+import {AppState} from "../store/reducers";
+import {
+  fullRangeDateLabelSelector,
+  fullRangeTimeSlots,
+  headerDateLabelSelector,
+  projectLabelSelector
+} from "../selectors";
 
 
 const TimeTrackingContainer = styled.div`
@@ -23,47 +31,43 @@ const ProjectLabel = styled.div`
   margin-top: 50px;
 `;
 
-interface TimeTrackingState {
-    startDate: Date
-}
-
 interface MatchParams {
-    project: string;
+  project: string;
 }
 
 interface TimeTrackingProps extends RouteComponentProps<MatchParams> {
 }
 
 const ProjectTracker: FC<TimeTrackingProps> = (props: TimeTrackingProps) => {
-    const [date, setDate] = useState<TimeTrackingState>({startDate: new Date()});
-    const {startDate, endDate} = getCalendarDates(date.startDate);
-    const dateLabels: string[] = getDateLabels(startDate);
-    const startDateLabel: string = formatFullDate(startDate);
-    const endDateLabel: string = formatFullDate(endDate);
-    const {project} = props.match.params;
+  const {project} = props.match.params;
+  const projectLabel: string = useSelector((state: AppState) => projectLabelSelector(state, project));
+  const dateLabels: string[] = useSelector((state: AppState) => fullRangeDateLabelSelector(state));
+  const timeSlots: Keyed<DayTimeStat> = useSelector((state: AppState) => fullRangeTimeSlots(state, project));
+  const {startDateLabel, endDateLabel} = useSelector((state: AppState) => headerDateLabelSelector(state));
 
-    const handleChangeTimeSlot = (daysToAdd: number) => {
-        const newStartDate = addDays(date.startDate, daysToAdd);
-        setDate({startDate: newStartDate});
-    };
-
-    return (
-        <>
-            <Header
-                title='Time tracking'
-                startDateLabel={startDateLabel}
-                endDateLabel={endDateLabel}
-                handleNextTimeSlot={() => handleChangeTimeSlot(1)}
-                handlePreviousTimeSlot={() => handleChangeTimeSlot(-1)}
-            />
-            <TimeTrackingContainer>
-                <ProjectLabel>{project}</ProjectLabel>
-                {
-                    dateLabels.map((item) => <TimeSlot key={item} dateLabel={item}/>)
-                }
-            </TimeTrackingContainer>
-        </>
-    );
+  return (
+      <>
+        <Header
+            title='Time tracking'
+            startDateLabel={startDateLabel}
+            endDateLabel={endDateLabel}
+            projectId={projectLabel}
+        />
+        <TimeTrackingContainer>
+          <ProjectLabel>{projectLabel}</ProjectLabel>
+          {
+            dateLabels.map((item) =>
+              <TimeSlot
+                key={item}
+                dateLabel={item}
+                projectId={project}
+                amountOfHours={timeSlots[item] && timeSlots[item].amountOfHours ? timeSlots[item].amountOfHours : null}
+              />
+            )
+          }
+        </TimeTrackingContainer>
+      </>
+  );
 };
 
 export default withRouter(ProjectTracker);

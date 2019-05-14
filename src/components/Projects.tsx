@@ -6,7 +6,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Keyed, Project} from '../models';
 
 import {AppState} from '../store/reducers';
-import {actions} from '../store/actions';
+import {addProject, deleteProject, editProject} from '../store/actions';
 
 import {Button, Container, SpacedBottomInput, Title} from './CommontStyledComponents';
 import Modal from './Modal';
@@ -72,10 +72,10 @@ const Projects: FC = () => {
 
         setSavingProject(true);
         if (editProjectId) {
-            dispatch(actions.editProject(editProjectId, projectLabel));
+            dispatch(editProject(editProjectId, projectLabel));
             setEditProjectId(null);
         } else {
-            dispatch(actions.addProject(projectLabel));
+            dispatch(addProject(projectLabel));
         }
 
 
@@ -88,7 +88,7 @@ const Projects: FC = () => {
     };
 
     const handleDeleteProject = (projectId: number) => {
-        dispatch(actions.deleteProject(projectId));
+        dispatch(deleteProject(projectId));
     };
 
     const handleEditProject = (id: number) => {

@@ -2,7 +2,7 @@ import {handleActions} from 'redux-actions';
 import {set, unset} from 'lodash/fp';
 
 import {Keyed, Project} from '../../models';
-import {actions} from '../actions';
+import {ADD_PROJECT, DELETE_PROJECT, EDIT_PROJECT} from '../actionTypes';
 
 
 const initialState: Keyed<Project> = {
@@ -14,13 +14,13 @@ const initialState: Keyed<Project> = {
 
 const projectsReducer = handleActions(
     {
-      [actions.addProject.toString()]: (state, {payload: {id, label}}) => {
+      [ADD_PROJECT]: (state, {payload: {id, label}}) => {
         return set(`${id}`, {id, label}, state);
       },
-      [actions.deleteProject.toString()]: (state, {payload: {id}}) => {
+      [DELETE_PROJECT]: (state, {payload: {id}}) => {
         return unset(`${id}`, state);
       },
-      [actions.editProject.toString()]: (state, {payload: {id, label}}) => {
+      [EDIT_PROJECT]: (state, {payload: {id, label}}) => {
         return set(`${id}`, {id, label}, state);
       },
     },

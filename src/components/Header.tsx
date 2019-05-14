@@ -5,8 +5,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 
 import {Button, Title} from './CommontStyledComponents';
-import {actions} from "../store/actions";
-import {AppState} from "../store/reducers";
+import {AppState} from '../store/reducers';
+import {switchStartDate} from '../store/actions';
 
 const DatesRange = styled.div`
   color: ${props => props.theme.colors.secondary}
@@ -51,12 +51,12 @@ const Header: FC<HeaderProps> = ({title, startDateLabel, endDateLabel, projectId
                 </div>
                 <div>
                     <SpacedButton
-                        onClick={() => dispatch(actions.switchStartDate(startDate, -1))}
+                        onClick={() => dispatch(switchStartDate(startDate, -1))}
                     >
                         Previous
                     </SpacedButton>
                     <HeaderButton
-                        onClick={() => dispatch(actions.switchStartDate(startDate, 1))}
+                        onClick={() => dispatch(switchStartDate(startDate, 1))}
                     >
                         Next
                     </HeaderButton>

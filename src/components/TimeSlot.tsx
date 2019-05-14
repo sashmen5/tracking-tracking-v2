@@ -1,10 +1,10 @@
 import React, {ChangeEvent, FC} from 'react';
 import styled from 'styled-components';
 // @ts-ignore
-import {useDispatch} from "react-redux";
+import {useDispatch} from 'react-redux';
 
 import {Input} from './CommontStyledComponents';
-import {actions} from "../store/actions";
+import {deleteTimeTracker, editTimeTracker} from '../store/actions';
 
 const Container = styled.div`
     height: 300px;                       
@@ -36,11 +36,11 @@ const TimeSlot: FC<TimeSlotProps> = ({projectId, dateLabel, amountOfHours}: Time
     function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
         const {value} = e.target;
         if (!value) {
-            dispatch(actions.deleteTimeTracker(projectId, dateLabel));
+            dispatch(deleteTimeTracker(projectId, dateLabel));
         } else  {
-            const hours = parseInt(value);
+            const hours: number = parseInt(value);
             if (!isNaN(hours)) {
-                dispatch(actions.editTimeTracker(projectId, dateLabel, value));
+                dispatch(editTimeTracker(projectId, dateLabel, hours));
             }
         }
     }

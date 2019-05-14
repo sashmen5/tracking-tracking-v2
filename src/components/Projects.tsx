@@ -3,10 +3,7 @@ import styled from 'styled-components';
 // @ts-ignore
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Keyed, Project } from 'models';
-
-import { AppState } from 'store/reducers';
-import { addProject, deleteProject, editProject } from 'store/actions';
+import { Keyed, Project } from '../models';
 
 import {
   Button,
@@ -19,6 +16,8 @@ import Modal from './Modal';
 
 import ProjectItem from './ProjectItem';
 import withLoader from '../HOCs/withLoader';
+import { addProject, deleteProject, editProject } from '../store/actions';
+import { AppState } from '../store/reducers';
 
 const Wrapper = styled.div`
   margin: 0 auto;

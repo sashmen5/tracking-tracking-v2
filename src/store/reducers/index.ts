@@ -6,6 +6,5 @@ const rootReducer = combineReducers({
   projects: projectsReducer,
   timeTracker: timeTrackerReducer
 });
-
 export type AppState = ReturnType<typeof rootReducer>;
 export default rootReducer;

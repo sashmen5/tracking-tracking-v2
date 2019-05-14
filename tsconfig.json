@@ -15,18 +15,9 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
-    "paths": {
-      "*": [
-        "./src/*"
-      ],
-      "_tests_/*": [
-        "./_tests_/*"
-      ]
-    },
-    "baseUrl": "."
+    "jsx": "preserve"
   },
   "include": [
     "src"

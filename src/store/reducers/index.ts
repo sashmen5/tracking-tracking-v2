@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 import projectsReducer from './projectsReducer';
 import timeTrackerReducer from './timeTrackerReducer';
 
@@ -7,5 +7,5 @@ const rootReducer = combineReducers({
   timeTracker: timeTrackerReducer
 });
 
-export type AppState = ReturnType<typeof rootReducer>
+export type AppState = ReturnType<typeof rootReducer>;
 export default rootReducer;

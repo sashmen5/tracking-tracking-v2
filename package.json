@@ -53,15 +53,22 @@
   },
   "devDependencies": {
     "husky": "^2.2.0",
+    "lint-staged": "^8.1.6",
     "prettier": "^1.17.1",
     "pretty-quick": "^1.10.0"
   },
   "prettier": {
     "singleQuote": true
   },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write --single-quote=true",
+      "git add"
+    ]
+  },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "lint-staged"
     }
   }
 }

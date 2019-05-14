@@ -4,6 +4,8 @@ import styled  from 'styled-components';
 import {useDispatch, useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 
+import {CHART, PROJECT} from "../constants";
+
 import {Button, Title} from './CommontStyledComponents';
 import {AppState} from '../store/reducers';
 import {switchStartDate} from '../store/actions';
@@ -43,7 +45,7 @@ const Header: FC<HeaderProps> = ({title, startDateLabel, endDateLabel, projectId
                 <div>
                     <Title>{title}</Title>
                     <DatesRange>{startDateLabel} - {endDateLabel}</DatesRange>
-                    <Link to={{pathname: `/projects/${projectId}/chart`}}>
+                    <Link to={{pathname: `/${PROJECT}/${projectId}/${CHART}`}}>
                         <HeaderButton>
                             Open Chart
                         </HeaderButton>

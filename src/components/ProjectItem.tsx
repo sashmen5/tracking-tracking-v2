@@ -1,6 +1,9 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
+
+import {PROJECT} from "../constants";
+
 import {Project} from '../models';
 
 const Container = styled.div`
@@ -37,7 +40,7 @@ const ProjectItem: FC<ProjectItemProps> = ({project, handleDeleteProject, handle
     const {id} = project;
     return (
         <Container>
-            <StyledLink to={{pathname: `projects/${project.id}`}}>{project.label}</StyledLink>
+            <StyledLink to={{pathname: `${PROJECT}/${project.id}`}}>{project.label}</StyledLink>
             <div>
                 <Label onClick={() => handleEditProject(id)}>Edit</Label>
                 <span> | </span>

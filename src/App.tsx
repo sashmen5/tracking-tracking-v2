@@ -4,6 +4,8 @@ import styled, {createGlobalStyle, ThemeProvider} from 'styled-components';
 
 import {mainTheme} from './MainTheme';
 
+import {CHART, PROJECT, PROJECTS} from './constants';
+
 import Login from './components/Login';
 import Projects from './components/Projects';
 import WrongRouter from './components/WrongRouter';
@@ -31,9 +33,9 @@ const App: FC = () => {
                     <GlobalStyle/>
                     <Switch>
                         <Route path='/' exact component={Login} />
-                        <Route path='/projects' exact component={Projects} />
-                        <Route path='/projects/:project' exact component={ProjectTracker} />
-                        <Route path='/projects/:project/chart' exact component={Chart} />
+                        <Route path={`/${PROJECTS}`} exact component={Projects} />
+                        <Route path={`/${PROJECT}/:${PROJECT}`} exact component={ProjectTracker} />
+                        <Route path={`/${PROJECT}/:${PROJECT}/${CHART}`} exact component={Chart} />
                         <Route component={WrongRouter}/>
                     </Switch>
                 </Content>

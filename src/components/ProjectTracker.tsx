@@ -1,13 +1,9 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
 import {RouteComponentProps, withRouter} from 'react-router';
-
-import TimeSlot from './TimeSlot';
-import Header from './Header';
-import {DayTimeStat, Keyed} from "../models";
 // @ts-ignore
 import {useSelector} from "react-redux";
-import {AppState} from "../store/reducers";
+
 import {
   fullRangeDateLabelSelector,
   fullRangeTimeSlots,
@@ -15,6 +11,12 @@ import {
   projectLabelSelector
 } from "../selectors";
 
+import {AppState} from "../store/reducers";
+
+import {DayTimeStat, Keyed} from "../models";
+
+import TimeSlot from './TimeSlot';
+import Header from './Header';
 
 const TimeTrackingContainer = styled.div`
     padding: 30px 0;                        

@@ -1,8 +1,7 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
-
-import {Project} from './Projects';
+import {Project} from '../models';
 
 const Container = styled.div`
   display: flex;
@@ -26,7 +25,7 @@ const DangerousLabel = styled(Label)`
 interface ProjectItemProps {
     project: Project;
     handleDeleteProject: (id: number) => void;
-    handleEditProject: (project: Project) => void;
+    handleEditProject: (id: number) => void;
 }
 
 const StyledLink = styled(Link)`
@@ -38,9 +37,9 @@ const ProjectItem: FC<ProjectItemProps> = ({project, handleDeleteProject, handle
     const {id} = project;
     return (
         <Container>
-            <StyledLink to={{pathname: `projects/${project.label}`}}>{project.label}</StyledLink>
+            <StyledLink to={{pathname: `projects/${project.id}`}}>{project.label}</StyledLink>
             <div>
-                <Label onClick={() => handleEditProject(project)}>Edit</Label>
+                <Label onClick={() => handleEditProject(id)}>Edit</Label>
                 <span> | </span>
                 <DangerousLabel onClick={() => handleDeleteProject(id)}>Delete</DangerousLabel>
             </div>

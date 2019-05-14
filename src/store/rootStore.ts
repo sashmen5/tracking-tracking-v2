@@ -1,8 +1,18 @@
-import {createStore} from 'redux';
+import { createStore } from 'redux';
+import persistState from 'redux-localstorage';
+
 import rootReducer from './reducers';
-import {composeWithDevTools} from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const composeEnhancers = composeWithDevTools({});
-const store = createStore(rootReducer, composeEnhancers());
+
+// TODO: check type
+// @ts-ignore
+const store = createStore(
+  rootReducer,
+  composeEnhancers(
+    persistState() // It saves all the changes of whole application state in localstorage
+  )
+);
 
 export default store;

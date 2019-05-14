@@ -1,5 +1,6 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, ReactElement, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { TiThLarge, TiThMenu } from 'react-icons/ti';
 // @ts-ignore
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -50,13 +51,31 @@ const Label = styled.div`
 
 const ButtonWrapper = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
 `;
 
 const ProjectsButton = styled(Button)`
   width: 100px;
-  margin-bottom: 50px;
 `;
+
+const Icons = styled.div`
+  font-size: 30px;
+  width: 70px;
+  display: flex;
+  justify-content: space-between;
+  color: ${props => props.theme.colors.secondary};
+`;
+
+const GridContainer = styled(Container)`
+  display: grid;
+  column-gap: 10px;
+  grid-template-columns: repeat(3, 180px);
+  grid-auto-rows: 180px;
+`;
+
+type ViewType = 'ROWS' | 'GRID';
 
 const LoadingModalContentWrapper = withLoader(ModalContent);
 
@@ -70,6 +89,7 @@ const Projects: FC = () => {
   const [projectLabel, setProjectLabel] = useState<string>('');
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [savingProject, setSavingProject] = useState<boolean>(false);
+  const [projectsViewType, setProjectsViewType] = useState<ViewType>('ROWS');
   const inputEl = useRef<HTMLInputElement>(null);
 
   const handleSaveProjectClicked = () => {
@@ -115,29 +135,43 @@ const Projects: FC = () => {
 
   const projectKeys: string[] = Object.keys(reduxProjects);
 
+  const renderProjectItems = (itemsDirection: string) =>
+    projectKeys.length ? (
+      projectKeys.map((key: string) => (
+        <ProjectItem
+          key={`${reduxProjects[key].id}`}
+          itemsDirection={itemsDirection}
+          project={reduxProjects[key]}
+          handleDeleteProject={handleDeleteProject}
+          handleEditProject={handleEditProject}
+        />
+      ))
+    ) : (
+      <h3>Please add project</h3>
+    );
+
+  const listView = () => <Container>{renderProjectItems('row')}</Container>;
+
+  const gridView = () => (
+    <GridContainer>{renderProjectItems('column')}</GridContainer>
+  );
+
+  const itemsView = projectsViewType === 'GRID' ? gridView : listView;
+
   return (
     <>
       <Title>Projects</Title>
       <Wrapper>
         <ButtonWrapper>
+          <Icons>
+            <TiThMenu onClick={() => setProjectsViewType('ROWS')} />
+            <TiThLarge onClick={() => setProjectsViewType('GRID')} />
+          </Icons>
           <ProjectsButton onClick={e => handleOpenModal()}>
             Add project
           </ProjectsButton>
         </ButtonWrapper>
-        <Container>
-          {projectKeys.length ? (
-            projectKeys.map((key: string) => (
-              <ProjectItem
-                key={`${reduxProjects[key].id}`}
-                project={reduxProjects[key]}
-                handleDeleteProject={handleDeleteProject}
-                handleEditProject={handleEditProject}
-              />
-            ))
-          ) : (
-            <h3>Please add project</h3>
-          )}
-        </Container>
+        <ProjectItems>{itemsView}</ProjectItems>
       </Wrapper>
 
       <ModalWrapper openModal={openModal}>
@@ -160,3 +194,6 @@ const Projects: FC = () => {
   );
 };
 export default Projects;
+
+const ProjectItems: FC<{ children: () => ReactElement }> = props =>
+  props.children();

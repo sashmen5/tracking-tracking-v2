@@ -27,14 +27,14 @@ const timeTrackerReducer: Reducer<TimeTracker> = handleActions(
     [EDIT_TIME_TRACKER]: (state: TimeTracker, action: EditTimeTracker) => {
       const { projectId, date, amountOfHours } = action.payload;
       return set(
-        `projectsTimeSlots.${projectId}[${date}]`,
+        ['projectsTimeSlots', projectId, date],
         { amountOfHours, date },
         state
       );
     },
     [DELETE_TIME_TRACKER]: (state: TimeTracker, action: DeleteTimeTracker) => {
       const { projectId, date } = action.payload;
-      return unset(`projectsTimeSlots.${projectId}[${date}]`, state);
+      return unset(['projectsTimeSlots', projectId, date], state);
     },
     [SWITCH_START_DATE]: (state: TimeTracker, action: SwitchStartDate) => {
       const { newStartDate } = action.payload;

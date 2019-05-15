@@ -9,6 +9,7 @@ import {
   Title
 } from 'components/CommontStyledComponents';
 import withLoader from 'hocs/withLoader';
+import { PROJECTS } from '../constants';
 
 const LoginContainer = styled(Container)`
   margin: 0 auto;
@@ -41,7 +42,7 @@ const Login: FC = () => {
   };
 
   if (toHomePage) {
-    return <Redirect push to="/projects" />;
+    return <Redirect push to={PROJECTS} />;
   }
 
   return (

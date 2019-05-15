@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import { PROJECT } from 'constants/index';
 import { Project } from 'models';
 
 interface ContainerProps {
@@ -50,7 +49,7 @@ const ProjectItem: FC<ProjectItemProps> = ({
   const { id } = project;
   return (
     <Container flexDirection={itemsDirection}>
-      <StyledLink to={{ pathname: `${PROJECT}/${project.id}` }}>
+      <StyledLink to={{ pathname: `/project/${project.id}` }}>
         {project.label}
       </StyledLink>
       <div>

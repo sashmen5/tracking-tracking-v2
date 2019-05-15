@@ -24,15 +24,15 @@ const projectsReducer: Reducer<Keyed<Project>> = handleActions(
   {
     [ADD_PROJECT]: (state: Keyed<Project>, action: AddProjectAction) => {
       const { id, label } = action.payload;
-      return set(`${id}`, { id, label }, state);
+      return set(id, { id, label }, state);
     },
     [DELETE_PROJECT]: (state: Keyed<Project>, action: DeleteProjectAction) => {
       const { id } = action.payload;
-      return unset(`${id}`, state);
+      return unset(id, state);
     },
     [EDIT_PROJECT]: (state: Keyed<Project>, action: EditProjectAction) => {
       const { id, label } = action.payload;
-      return set(`${id}`, { id, label }, state);
+      return set(id, { id, label }, state);
     }
   },
   initialState

@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps, withRouter } from 'react-router';
+import get from 'lodash/fp/get';
 // @ts-ignore
 import { useSelector } from 'react-redux';
 
@@ -55,6 +56,8 @@ const ProjectTracker: FC<TimeTrackingProps> = (props: TimeTrackingProps) => {
     headerDateLabelSelector(state)
   );
 
+  const getAmountOfHours = (dateLabel: string) =>
+    get([dateLabel, 'amountOfHours'], timeSlots);
   return (
     <>
       <Header
@@ -70,11 +73,7 @@ const ProjectTracker: FC<TimeTrackingProps> = (props: TimeTrackingProps) => {
             key={item}
             dateLabel={item}
             projectId={project}
-            amountOfHours={
-              timeSlots[item] && timeSlots[item].amountOfHours
-                ? timeSlots[item].amountOfHours
-                : null
-            }
+            amountOfHours={getAmountOfHours(item)}
           />
         ))}
       </TimeTrackingContainer>

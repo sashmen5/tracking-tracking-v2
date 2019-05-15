@@ -54,7 +54,7 @@ const TimeSlot: FC<TimeSlotProps> = ({
       <div>{dateLabel}</div>
       <TimeSlotInput
         type="text"
-        value={amountOfHours ? amountOfHours : ''}
+        value={amountOfHours || ''}
         onChange={e => handleInputChange(e)}
       />
     </Container>

@@ -6,6 +6,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { Keyed, Project } from 'models';
 
+import { AppState } from 'store/reducers';
+import { addProject, deleteProject, editProject } from 'store/actions';
+
+import withLoader from 'hocs/withLoader';
+
 import {
   Button,
   Container,
@@ -14,11 +19,7 @@ import {
 } from 'components/CommontStyledComponents';
 
 import Modal from 'components/Modal';
-
 import ProjectItem from 'components/ProjectItem';
-import withLoader from 'hocs/withLoader';
-import { addProject, deleteProject, editProject } from 'store/actions';
-import { AppState } from 'store/reducers';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -41,7 +42,7 @@ interface ModalWrapperProps {
 }
 
 const ModalWrapper = styled.div<ModalWrapperProps>`
-  visibility: ${props => (props.openModal ? '' : 'hidden')};
+  ${props => !props.openModal && 'visibility: hidden'};
 `;
 
 const Label = styled.div`

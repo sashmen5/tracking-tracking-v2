@@ -11,8 +11,6 @@ import {
   EditProjectAction
 } from 'store/actionTypes';
 
-import { AppState } from 'store/reducers/index';
-
 import { Reducer } from 'redux';
 
 const initialState: Keyed<Project> = {

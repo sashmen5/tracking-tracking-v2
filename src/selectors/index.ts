@@ -7,9 +7,11 @@ import { formatFullDate, getCalendarDates, getDateLabels } from 'utils';
 
 export const projectsSelector = (state: AppState): Keyed<Project> =>
   state.projects;
+
 export const timeTrackerSelector = (
   state: AppState
 ): Keyed<Keyed<DayTimeStat>> => state.timeTracker.projectsTimeSlots;
+
 export const startDateSelector = (state: AppState): Date =>
   state.timeTracker.startDate;
 

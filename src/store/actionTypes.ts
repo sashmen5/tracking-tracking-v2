@@ -1,43 +1,47 @@
-export const ADD_PROJECT = 'ADD_PROJECT';
-export const EDIT_PROJECT = 'EDIT_PROJECT';
-export const DELETE_PROJECT = 'DELETE_PROJECT';
+export const ADD_PROJECT: string = 'ADD_PROJECT';
+export const EDIT_PROJECT: string = 'EDIT_PROJECT';
+export const DELETE_PROJECT: string = 'DELETE_PROJECT';
 
-export const EDIT_TIME_TRACKER = 'EDIT_TIME_TRACKER';
-export const DELETE_TIME_TRACKER = 'DELETE_TIME_TRACKER';
-export const SWITCH_START_DATE = 'SWITCH_START_DATE';
+export const EDIT_TIME_TRACKER: string = 'EDIT_TIME_TRACKER';
+export const DELETE_TIME_TRACKER: string = 'DELETE_TIME_TRACKER';
+export const SWITCH_START_DATE: string = 'SWITCH_START_DATE';
 
-interface AddProjectAction {
+export interface AddProjectAction {
   type: typeof ADD_PROJECT;
-  payload: {id: number, label: string};
+  payload: { id: number; label: string };
 }
 
-interface EditProjectAction {
+export interface EditProjectAction {
   type: typeof EDIT_PROJECT;
-  payload: {id: number, label: string};
+  payload: { id: number; label: string };
 }
 
-interface DeleteProjectAction {
+export interface DeleteProjectAction {
   type: typeof DELETE_PROJECT;
-  payload: {id: number}
+  payload: { id: number };
 }
 
-interface EditTimeTracker {
+export interface EditTimeTracker {
   type: typeof EDIT_TIME_TRACKER;
-  payload: {projectId: string | number, date: string, amountOfHours: number};
+  payload: { projectId: string | number; date: string; amountOfHours: number };
 }
 
-interface DeleteTimeTracker {
+export interface DeleteTimeTracker {
   type: typeof DELETE_TIME_TRACKER;
-  payload: {projectId: string | number, date: string};
+  payload: { projectId: string | number; date: string };
 }
 
-
-interface SwitchStartDate {
+export interface SwitchStartDate {
   type: typeof SWITCH_START_DATE;
-  payload: {newStartDate: Date};
+  payload: { newStartDate: Date };
 }
 
-export type ProjectActions = AddProjectAction | EditProjectAction | DeleteProjectAction;
+export type ProjectActions =
+  | AddProjectAction
+  | EditProjectAction
+  | DeleteProjectAction;
 
-export type TimeTrackerActions = EditTimeTracker | DeleteTimeTracker | SwitchStartDate;
-
+export type TimeTrackerActions =
+  | EditTimeTracker
+  | DeleteTimeTracker
+  | SwitchStartDate;

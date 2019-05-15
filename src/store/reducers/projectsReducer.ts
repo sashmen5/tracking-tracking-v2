@@ -2,7 +2,18 @@ import { handleActions } from 'redux-actions';
 import { set, unset } from 'lodash/fp';
 
 import { Keyed, Project } from 'models';
-import { ADD_PROJECT, DELETE_PROJECT, EDIT_PROJECT } from 'store/actionTypes';
+import {
+  ADD_PROJECT,
+  AddProjectAction,
+  DELETE_PROJECT,
+  DeleteProjectAction,
+  EDIT_PROJECT,
+  EditProjectAction
+} from 'store/actionTypes';
+
+import { AppState } from 'store/reducers/index';
+
+import { Reducer } from 'redux';
 
 const initialState: Keyed<Project> = {
   1: { id: 1, label: 'Thailand' },
@@ -11,15 +22,18 @@ const initialState: Keyed<Project> = {
   4: { id: 4, label: 'Apple' }
 };
 
-const projectsReducer = handleActions(
+const projectsReducer: Reducer<Keyed<Project>> = handleActions(
   {
-    [ADD_PROJECT]: (state, { payload: { id, label } }) => {
+    [ADD_PROJECT]: (state: Keyed<Project>, action: AddProjectAction) => {
+      const { id, label } = action.payload;
       return set(`${id}`, { id, label }, state);
     },
-    [DELETE_PROJECT]: (state, { payload: { id } }) => {
+    [DELETE_PROJECT]: (state: Keyed<Project>, action: DeleteProjectAction) => {
+      const { id } = action.payload;
       return unset(`${id}`, state);
     },
-    [EDIT_PROJECT]: (state, { payload: { id, label } }) => {
+    [EDIT_PROJECT]: (state: Keyed<Project>, action: EditProjectAction) => {
+      const { id, label } = action.payload;
       return set(`${id}`, { id, label }, state);
     }
   },

@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
 import persistState from 'redux-localstorage';
 
-import rootReducer from './reducers';
+import rootReducer from 'store/reducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 const composeEnhancers = composeWithDevTools({});

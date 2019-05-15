@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import { PROJECT } from '../constants';
-import { Project } from '../models';
+import { PROJECT } from 'constants/index';
+import { Project } from 'models';
 
 interface ContainerProps {
   flexDirection: string;

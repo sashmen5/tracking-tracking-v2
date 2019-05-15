@@ -1,8 +1,9 @@
-import { AppState } from '../store/reducers';
 import { createSelector } from 'reselect';
-import { DayTimeStat, Keyed, Project } from '../models';
-import { formatFullDate, getCalendarDates, getDateLabels } from '../DateUtils';
 import pick from 'lodash/fp/pick';
+
+import { DayTimeStat, Keyed, Project } from 'models';
+import { AppState } from 'store/reducers';
+import { formatFullDate, getCalendarDates, getDateLabels } from 'utils';
 
 export const projectsSelector = (state: AppState): Keyed<Project> =>
   state.projects;

@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { CHART, PROJECT } from '../constants';
+import { CHART, PROJECT } from 'constants/index';
 
-import { Button, Title } from './CommontStyledComponents';
-import { AppState } from '../store/reducers';
-import { switchStartDate } from '../store/actions';
+import { Button, Title } from 'components/CommontStyledComponents';
+import { AppState } from 'store/reducers';
+import { switchStartDate } from 'store/actions';
 
 const DatesRange = styled.div`
   color: ${props => props.theme.colors.secondary};

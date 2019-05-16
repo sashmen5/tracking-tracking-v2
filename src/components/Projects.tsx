@@ -1,11 +1,25 @@
-import React, {FC, useRef, useState} from 'react';
-import styled from "styled-components";
+import React, { FC, ReactElement, useRef, useState } from 'react';
+import styled from 'styled-components';
+import { TiThLarge, TiThMenu } from 'react-icons/ti';
+// @ts-ignore
+import { useSelector, useDispatch } from 'react-redux';
 
-import {Button, Container, SpacedBottomInput, Title} from "./CommontStyledComponents";
+import { Keyed, Project } from 'models';
 
-import Modal from "./Modal";
-import ProjectItem from "./ProjectItem";
-import withLoader from "../HOCs/withLoader";
+import { AppState } from 'store/reducers';
+import { addProject, deleteProject, editProject } from 'store/actions';
+
+import withLoader from 'hocs/withLoader';
+
+import {
+  Button,
+  Container,
+  SpacedBottomInput,
+  Title
+} from 'components/CommontStyledComponents';
+
+import Modal from 'components/Modal';
+import ProjectItem from 'components/ProjectItem';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -24,11 +38,11 @@ const ModalContent = styled.div`
 `;
 
 interface ModalWrapperProps {
-    openModal: boolean
+  openModal: boolean;
 }
 
 const ModalWrapper = styled.div<ModalWrapperProps>`
-  visibility: ${props => props.openModal ? '' : 'hidden'};
+  ${props => !props.openModal && 'visibility: hidden'};
 `;
 
 const Label = styled.div`
@@ -37,138 +51,150 @@ const Label = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
 `;
 
 const ProjectsButton = styled(Button)`
   width: 100px;
-  margin-bottom: 50px;
 `;
+
+const Icons = styled.div`
+  font-size: 30px;
+  width: 70px;
+  display: flex;
+  justify-content: space-between;
+  color: ${props => props.theme.colors.secondary};
+`;
+
+const GridContainer = styled(Container)`
+  display: grid;
+  column-gap: 10px;
+  grid-template-columns: repeat(3, 180px);
+  grid-auto-rows: 180px;
+`;
+
+type ViewType = 'ROWS' | 'GRID';
 
 const LoadingModalContentWrapper = withLoader(ModalContent);
 
-let nextProjectId: number = 4;
-
-export interface Project {
-    id: number;
-    label: string;
-}
-
-const startProjects: Project[] = [
-    {id: 1, label: 'Thailand'},
-    {id: 2, label: 'Wix'},
-    {id: 3, label: 'Facebook'},
-    {id: 4, label: 'Apple'}
-];
-
 const Projects: FC = () => {
-    const [projects, setProjects] = useState<Project[]>(startProjects);
-    const [projectLabel, setProjectLabel] = useState<string>('');
-    const [openModal, setOpenModal] = useState<boolean>(false);
-    const [editMode, setEditMode] = useState<boolean>(false);
-    const [preEditedProject, setPreEditedProject] = useState<Project | null>(null);
-    const [savingProject, setSavingProject] = useState<boolean>(false);
-    const inputEl = useRef<HTMLInputElement>(null);
+  const reduxProjects: Keyed<Project> = useSelector(
+    (state: AppState) => state.projects
+  );
+  const dispatch = useDispatch();
 
+  const [editProjectId, setEditProjectId] = useState<number | null>(null);
+  const [projectLabel, setProjectLabel] = useState<string>('');
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [savingProject, setSavingProject] = useState<boolean>(false);
+  const [projectsViewType, setProjectsViewType] = useState<ViewType>('ROWS');
+  const inputEl = useRef<HTMLInputElement>(null);
 
-    const handleSaveProjectClicked = () => {
-        if (!projectLabel) {
-            return
-        }
+  const handleSaveProjectClicked = () => {
+    if (!projectLabel) {
+      return;
+    }
 
-        setSavingProject(true);
-        if (editMode) {
-            const index: number = projects.findIndex(item => item.id === preEditedProject!.id);
-            setProjects([
-                ...projects.slice(0, index),
-                {id: projects[index].id, label: projectLabel},
-                ...projects.slice(index + 1)
-            ]);
+    setSavingProject(true);
+    if (editProjectId) {
+      dispatch(editProject(editProjectId, projectLabel));
+      setEditProjectId(null);
+    } else {
+      dispatch(addProject(projectLabel));
+    }
 
-            setEditMode(false);
-            setPreEditedProject(null);
+    //This 'setTimeout' required only to show that loader works. (Mock functionality)
+    setTimeout(() => {
+      setProjectLabel('');
+      setSavingProject(false);
+      setOpenModal(false);
+    }, 100);
+  };
 
-        } else {
-            const newProject: Project = {
-              id: ++nextProjectId,
-              label: projectLabel
-            };
-            setProjects([...projects, newProject]);
-        }
+  const handleDeleteProject = (projectId: number) => {
+    dispatch(deleteProject(projectId));
+  };
 
+  const handleEditProject = (id: number) => {
+    const projectLabel: string = reduxProjects[id].label;
+    setProjectLabel(projectLabel);
+    setEditProjectId(id);
+    handleOpenModal();
+  };
 
-        //This 'setTimeout' required only to show that loader works. (Mock functionality)
-        setTimeout(() => {
-            setProjectLabel('');
-            setSavingProject(false);
-            setOpenModal(false);
-        }, 1000);
-    };
+  const handleOpenModal = () => {
+    setOpenModal(true);
+    requestAnimationFrame(() => {
+      if (inputEl && inputEl.current) {
+        inputEl.current.focus();
+      }
+    });
+  };
 
-    const handleDeleteProject = (projectId: number) => {
-        const newProjects: Project[] = projects.filter(item => item.id !== projectId);
-        setProjects(newProjects);
-    };
+  const projectKeys: string[] = Object.keys(reduxProjects);
 
-    const handleEditProject = (project: Project) => {
-        setProjectLabel(projectLabel);
-        setPreEditedProject(project);
-        setEditMode(true);
-        handleOpenModal();
-    };
+  const renderProjectItems = (itemsDirection: string) =>
+    projectKeys.length ? (
+      projectKeys.map((key: string) => (
+        <ProjectItem
+          key={`${reduxProjects[key].id}`}
+          itemsDirection={itemsDirection}
+          project={reduxProjects[key]}
+          handleDeleteProject={handleDeleteProject}
+          handleEditProject={handleEditProject}
+        />
+      ))
+    ) : (
+      <h3>Please add project</h3>
+    );
 
-    const handleOpenModal = () => {
-        setOpenModal(true);
-        requestAnimationFrame(() => {
-            if (inputEl && inputEl.current) {
-                inputEl.current.focus()
-            }
-        })
-    };
+  const listView = () => <Container>{renderProjectItems('row')}</Container>;
 
-    return (
-        <>
-            <Title>Projects</Title>
-            <Wrapper>
-                <ButtonWrapper>
-                    <ProjectsButton onClick={e => handleOpenModal()}>Add project</ProjectsButton>
-                </ButtonWrapper>
-                <Container>
-                    {
-                        projects.length
-                            ?
-                            projects.map((project: Project) =>
-                                <ProjectItem
-                                    key={`${project.id}`}
-                                    project={project}
-                                    handleDeleteProject={handleDeleteProject}
-                                    handleEditProject={handleEditProject}
-                                />
-                            )
-                            :
-                            <h3>Please add project</h3>
-                    }
-                </Container>
-            </Wrapper>
+  const gridView = () => (
+    <GridContainer>{renderProjectItems('column')}</GridContainer>
+  );
 
-            <ModalWrapper openModal={openModal}>
-                <Modal closeModal={() => setOpenModal(false)}>
-                    <LoadingModalContentWrapper isLoading={savingProject}>
-                        <Label>Add new project</Label>
-                        <span>Project label</span>
-                        <SpacedBottomInput
-                            type="text"
-                            name="projectLabel"
-                            value={projectLabel}
-                            ref={inputEl}
-                            onChange={e => setProjectLabel(e.target.value)}
-                        />
-                        <Button onClick={handleSaveProjectClicked}>Save</Button>
-                    </LoadingModalContentWrapper>
-                </Modal>
-            </ModalWrapper>
-        </>
-    )
+  const itemsView = projectsViewType === 'GRID' ? gridView : listView;
+
+  return (
+    <>
+      <Title>Projects</Title>
+      <Wrapper>
+        <ButtonWrapper>
+          <Icons>
+            <TiThMenu onClick={() => setProjectsViewType('ROWS')} />
+            <TiThLarge onClick={() => setProjectsViewType('GRID')} />
+          </Icons>
+          <ProjectsButton onClick={e => handleOpenModal()}>
+            Add project
+          </ProjectsButton>
+        </ButtonWrapper>
+        <ProjectItems>{itemsView}</ProjectItems>
+      </Wrapper>
+
+      <ModalWrapper openModal={openModal}>
+        <Modal closeModal={() => setOpenModal(false)}>
+          <LoadingModalContentWrapper isLoading={savingProject}>
+            <Label>Add new project</Label>
+            <span>Project label</span>
+            <SpacedBottomInput
+              type="text"
+              name="projectLabel"
+              value={projectLabel}
+              ref={inputEl}
+              onChange={e => setProjectLabel(e.target.value)}
+            />
+            <Button onClick={handleSaveProjectClicked}>Save</Button>
+          </LoadingModalContentWrapper>
+        </Modal>
+      </ModalWrapper>
+    </>
+  );
 };
 export default Projects;
+
+const ProjectItems: FC<{ children: () => ReactElement }> = props =>
+  props.children();

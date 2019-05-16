@@ -1,11 +1,15 @@
-import React, {FC} from 'react';
-import styled  from 'styled-components';
-import {Link, RouteComponentProps, withRouter} from 'react-router-dom';
+import React, { FC } from 'react';
+import styled from 'styled-components';
+// @ts-ignore
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import {Button, Title} from './CommontStyledComponents';
+import { Button, Title } from 'components/CommontStyledComponents';
+import { AppState } from 'store/reducers';
+import { switchStartDate } from 'store/actions';
 
 const DatesRange = styled.div`
-  color: ${props => props.theme.colors.secondary}
+  color: ${props => props.theme.colors.secondary};
 `;
 
 const Container = styled.div`
@@ -23,46 +27,45 @@ const SpacedButton = styled(HeaderButton)`
   margin-right: 10px;
 `;
 
-interface MatchParams {
-    project: string;
+interface HeaderProps {
+  title: string;
+  startDateLabel: string;
+  projectId: string;
+  endDateLabel: string;
 }
 
-interface HeaderProps extends RouteComponentProps<MatchParams> {
-    title: string;
-    startDateLabel: string;
-    endDateLabel: string;
-    handleNextTimeSlot: () => void;
-    handlePreviousTimeSlot: () => void;
-}
+const Header: FC<HeaderProps> = ({
+  title,
+  startDateLabel,
+  endDateLabel,
+  projectId
+}: HeaderProps) => {
+  const startDate: Date = useSelector(
+    (state: AppState) => state.timeTracker.startDate
+  );
+  const dispatch = useDispatch();
 
-const Header: FC<HeaderProps> = ({match, title, startDateLabel, endDateLabel, handleNextTimeSlot, handlePreviousTimeSlot}: HeaderProps) => {
-    const {project} = match.params;
-
-    return (
-            <Container>
-                <div>
-                    <Title>{title}</Title>
-                    <DatesRange>{startDateLabel} - {endDateLabel}</DatesRange>
-                    <Link to={{pathname: `/projects/${project}/chart`}}>
-                        <HeaderButton>
-                            Open Chart
-                        </HeaderButton>
-                    </Link>
-                </div>
-                <div>
-                    <SpacedButton
-                        onClick={handlePreviousTimeSlot}
-                    >
-                        Previous
-                    </SpacedButton>
-                    <HeaderButton
-                        onClick={handleNextTimeSlot}
-                    >
-                        Next
-                    </HeaderButton>
-                </div>
-            </Container>
-    )
+  return (
+    <Container>
+      <div>
+        <Title>{title}</Title>
+        <DatesRange>
+          {startDateLabel} - {endDateLabel}
+        </DatesRange>
+        <Link to={{ pathname: `/project/${projectId}/chart` }}>
+          <HeaderButton>Open Chart</HeaderButton>
+        </Link>
+      </div>
+      <div>
+        <SpacedButton onClick={() => dispatch(switchStartDate(startDate, -1))}>
+          Previous
+        </SpacedButton>
+        <HeaderButton onClick={() => dispatch(switchStartDate(startDate, 1))}>
+          Next
+        </HeaderButton>
+      </div>
+    </Container>
+  );
 };
 
-export default withRouter(Header);
+export default Header;

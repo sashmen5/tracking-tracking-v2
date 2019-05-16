@@ -1,35 +1,75 @@
 import { addDays } from 'utils';
 import {
   ADD_PROJECT,
+  ApiAction,
   DELETE_PROJECT,
   DELETE_TIME_TRACKER,
   EDIT_PROJECT,
   EDIT_TIME_TRACKER,
+  ERROR_FETCH_PROJECTS,
+  FETCH_PROJECTS,
   ProjectActions,
+  SAVE_PROJECTS,
   SWITCH_START_DATE,
   TimeTrackerActions
 } from 'store/actionTypes';
+import { Project } from 'models';
 
-let nextProjectId = 4;
+export function fetchProjects(): ApiAction<Project[]> {
+  return {
+    type: FETCH_PROJECTS,
+    meta: { api: true },
+    payload: {
+      method: 'GET',
+      url: 'projects',
+      onSuccess: saveProjects,
+      onError: fetchedProjectsError
+    }
+  };
+}
 
-export function addProject(label: string): ProjectActions {
+export function addProject(label: string): ApiAction<Project> {
   return {
     type: ADD_PROJECT,
-    payload: { id: ++nextProjectId, label }
+    meta: { api: true },
+    payload: {
+      method: 'POST',
+      url: `projects`,
+      onSuccess: fetchProjects,
+      onError: fetchedProjectsError,
+      data: {
+        label
+      }
+    }
   };
 }
 
-export function editProject(id: number, label: string): ProjectActions {
+export function editProject(id: number, label: string): ApiAction<Project> {
   return {
     type: EDIT_PROJECT,
-    payload: { id, label }
+    meta: { api: true },
+    payload: {
+      method: 'PUT',
+      url: `projects/${id}`,
+      onSuccess: fetchProjects,
+      onError: fetchedProjectsError,
+      data: {
+        label
+      }
+    }
   };
 }
 
-export function deleteProject(id: number): ProjectActions {
+export function deleteProject(id: number): ApiAction<Project> {
   return {
     type: DELETE_PROJECT,
-    payload: { id }
+    meta: { api: true },
+    payload: {
+      method: 'DELETE',
+      url: `projects/${id}`,
+      onSuccess: fetchProjects,
+      onError: fetchedProjectsError
+    }
   };
 }
 
@@ -62,6 +102,24 @@ export function switchStartDate(
     type: SWITCH_START_DATE,
     payload: {
       newStartDate: addDays(date, amountOfDays)
+    }
+  };
+}
+
+export function saveProjects(data: Project[]): ProjectActions {
+  return {
+    type: SAVE_PROJECTS,
+    payload: {
+      data
+    }
+  };
+}
+
+export function fetchedProjectsError(error: any): ProjectActions {
+  return {
+    type: ERROR_FETCH_PROJECTS,
+    payload: {
+      error
     }
   };
 }

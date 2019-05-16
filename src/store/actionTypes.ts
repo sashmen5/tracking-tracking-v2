@@ -10,7 +10,7 @@ export const SWITCH_START_DATE: string = 'SWITCH_START_DATE';
 
 export const FETCH_PROJECTS: string = 'FETCH_PROJECTS';
 export const SAVE_PROJECTS: string = 'SAVE_PROJECTS';
-export const ERROR_FETCH_PROJECTS: string = 'ERROR_FETCH_PROJECTS';
+export const API_ERROR_REQUEST: string = 'API_ERROR_REQUEST';
 
 export interface EditTimeTracker {
   type: typeof EDIT_TIME_TRACKER;
@@ -34,8 +34,8 @@ export interface SaveProjectsAction {
   };
 }
 
-export interface ErrorFetchProjectsAction {
-  type: typeof ERROR_FETCH_PROJECTS;
+export interface ApiErrorRequestAction {
+  type: typeof API_ERROR_REQUEST;
   payload: {
     error: any;
   };
@@ -60,7 +60,7 @@ export interface ApiAction<Response> {
 
 export type ProjectActions =
   | SaveProjectsAction
-  | ErrorFetchProjectsAction
+  | ApiErrorRequestAction
   | ApiAction<Response>;
 
 export type TimeTrackerActions =

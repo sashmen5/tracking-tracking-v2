@@ -6,7 +6,7 @@ import {
   DELETE_TIME_TRACKER,
   EDIT_PROJECT,
   EDIT_TIME_TRACKER,
-  ERROR_FETCH_PROJECTS,
+  API_ERROR_REQUEST,
   FETCH_PROJECTS,
   ProjectActions,
   SAVE_PROJECTS,
@@ -23,7 +23,7 @@ export function fetchProjects(): ApiAction<Project[]> {
       method: 'GET',
       url: 'projects',
       onSuccess: saveProjects,
-      onError: fetchedProjectsError
+      onError: apiRequestError
     }
   };
 }
@@ -36,7 +36,7 @@ export function addProject(label: string): ApiAction<Project> {
       method: 'POST',
       url: `projects`,
       onSuccess: fetchProjects,
-      onError: fetchedProjectsError,
+      onError: apiRequestError,
       data: {
         label
       }
@@ -52,7 +52,7 @@ export function editProject(id: number, label: string): ApiAction<Project> {
       method: 'PUT',
       url: `projects/${id}`,
       onSuccess: fetchProjects,
-      onError: fetchedProjectsError,
+      onError: apiRequestError,
       data: {
         label
       }
@@ -68,7 +68,7 @@ export function deleteProject(id: number): ApiAction<Project> {
       method: 'DELETE',
       url: `projects/${id}`,
       onSuccess: fetchProjects,
-      onError: fetchedProjectsError
+      onError: apiRequestError
     }
   };
 }
@@ -115,9 +115,9 @@ export function saveProjects(data: Project[]): ProjectActions {
   };
 }
 
-export function fetchedProjectsError(error: any): ProjectActions {
+export function apiRequestError(error: any): ProjectActions {
   return {
-    type: ERROR_FETCH_PROJECTS,
+    type: API_ERROR_REQUEST,
     payload: {
       error
     }

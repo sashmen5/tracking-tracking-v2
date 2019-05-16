@@ -10,7 +10,7 @@ const apiMiddleware = ({ dispatch }: any) => (next: Function) => async (
   const { method, url, data, headers, onSuccess, onError } = action.payload;
 
   request({ method, url, data, headers })
-    .then(({ data }) => setTimeout(() => dispatch(onSuccess(data)), 1000))
+    .then(({ data }) => dispatch(onSuccess(data)))
     .catch(error => dispatch(onError(error)));
 
   return next(action);

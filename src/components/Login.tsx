@@ -9,7 +9,7 @@ import {
   Title
 } from 'components/CommontStyledComponents';
 import withLoader from 'hocs/withLoader';
-import { PROJECTS } from '../constants';
+import { PROJECTS } from 'constants/index';
 
 const LoginContainer = styled(Container)`
   margin: 0 auto;

@@ -1,13 +1,19 @@
-import React, { FC, ReactElement, useRef, useState } from 'react';
+import React, { FC, ReactElement, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { TiThLarge, TiThMenu } from 'react-icons/ti';
+import { find } from 'lodash/fp';
 // @ts-ignore
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Keyed, Project } from 'models';
 
 import { AppState } from 'store/reducers';
-import { addProject, deleteProject, editProject } from 'store/actions';
+import {
+  addProject,
+  deleteProject,
+  editProject,
+  fetchProjects
+} from 'store/actions';
 
 import withLoader from 'hocs/withLoader';
 
@@ -20,6 +26,7 @@ import {
 
 import Modal from 'components/Modal';
 import ProjectItem from 'components/ProjectItem';
+import { projectsSelector } from 'selectors/index';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -81,9 +88,10 @@ type ViewType = 'ROWS' | 'GRID';
 const LoadingModalContentWrapper = withLoader(ModalContent);
 
 const Projects: FC = () => {
-  const reduxProjects: Keyed<Project> = useSelector(
-    (state: AppState) => state.projects
+  const projects: Keyed<Project> = useSelector((state: AppState) =>
+    projectsSelector(state)
   );
+
   const dispatch = useDispatch();
 
   const [editProjectId, setEditProjectId] = useState<number | null>(null);
@@ -93,8 +101,17 @@ const Projects: FC = () => {
   const [projectsViewType, setProjectsViewType] = useState<ViewType>('ROWS');
   const inputEl = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    dispatch(fetchProjects());
+  }, []);
+
   const handleSaveProjectClicked = () => {
-    if (!projectLabel) {
+    const exists = find(
+      (project: Project) =>
+        project.label.toLowerCase() === projectLabel.toLowerCase(),
+      projects
+    );
+    if (!projectLabel || exists) {
       return;
     }
 
@@ -119,7 +136,7 @@ const Projects: FC = () => {
   };
 
   const handleEditProject = (id: number) => {
-    const projectLabel: string = reduxProjects[id].label;
+    const projectLabel: string = projects[id].label;
     setProjectLabel(projectLabel);
     setEditProjectId(id);
     handleOpenModal();
@@ -134,15 +151,15 @@ const Projects: FC = () => {
     });
   };
 
-  const projectKeys: string[] = Object.keys(reduxProjects);
+  const projectKeys: string[] = Object.keys(projects);
 
   const renderProjectItems = (itemsDirection: string) =>
     projectKeys.length ? (
       projectKeys.map((key: string) => (
         <ProjectItem
-          key={`${reduxProjects[key].id}`}
+          key={`${projects[key].id}`}
           itemsDirection={itemsDirection}
-          project={reduxProjects[key]}
+          project={projects[key]}
           handleDeleteProject={handleDeleteProject}
           handleEditProject={handleEditProject}
         />

@@ -1,17 +1,14 @@
-import { createStore } from 'redux';
-import persistState from 'redux-localstorage';
+import { applyMiddleware, createStore } from 'redux';
 
 import rootReducer from 'store/reducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import apiMiddleware from 'middlewares/apiMiddleware';
 
 const composeEnhancers = composeWithDevTools({});
 
 const store = createStore(
   rootReducer,
-  // @ts-ignore TODO: check typing
-  composeEnhancers(
-    persistState() // It saves all the changes of whole application state in localstorage
-  )
+  composeEnhancers(applyMiddleware(apiMiddleware))
 );
 
 export default store;

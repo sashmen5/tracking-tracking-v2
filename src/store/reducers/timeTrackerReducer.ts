@@ -9,7 +9,7 @@ import {
   EDIT_TIME_TRACKER,
   EditTimeTracker,
   SWITCH_START_DATE,
-  SwitchStartDate
+  SwitchStartDateAction
 } from 'store/actionTypes';
 
 export interface TimeTracker {
@@ -36,7 +36,10 @@ const timeTrackerReducer: Reducer<TimeTracker> = handleActions(
       const { projectId, date } = action.payload;
       return unset(['projectsTimeSlots', projectId, date], state);
     },
-    [SWITCH_START_DATE]: (state: TimeTracker, action: SwitchStartDate) => {
+    [SWITCH_START_DATE]: (
+      state: TimeTracker,
+      action: SwitchStartDateAction
+    ) => {
       const { newStartDate } = action.payload;
       return set(`startDate`, newStartDate, state);
     }

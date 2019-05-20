@@ -1,12 +1,23 @@
 import { createSelector } from 'reselect';
-import pick from 'lodash/fp/pick';
+import { pick, get } from 'lodash/fp';
 
-import { DayTimeStat, Keyed, Project } from 'models';
+import { DayTimeStat, Keyed, Project, User } from 'models';
 import { AppState } from 'store/reducers';
 import { formatFullDate, getCalendarDates, getDateLabels } from 'utils';
+import { LoadingState } from 'store/reducers/loadingReducer';
 
 export const projectsSelector = (state: AppState): Keyed<Project> =>
   state.projects;
+
+export const userSelector = (state: AppState): User => state.user;
+
+export const loadingSelector = (state: AppState): LoadingState => state.loading;
+
+export const loadingValueSelector = createSelector(
+  loadingSelector,
+  (state: AppState, loadingKey: string) => loadingKey,
+  (loadingState, loadingKey): string => get(loadingKey, loadingState)
+);
 
 export const timeTrackerSelector = (
   state: AppState

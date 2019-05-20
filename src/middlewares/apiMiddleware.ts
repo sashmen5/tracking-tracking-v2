@@ -1,19 +1,39 @@
-import request from 'utils/apiUtil';
+import request from 'utils/firebaseUtil';
+import get from 'lodash/fp/get';
+import { Dispatch, MiddlewareAPI } from 'redux';
 
-const apiMiddleware = ({ dispatch }: any) => (next: Function) => async (
-  action: any
+import { BaseAction } from 'store/actionTypes';
+import { AppState } from 'store/reducers';
+
+const apiMiddleware = ({
+  dispatch,
+  getState
+}: MiddlewareAPI<any, AppState>) => (next: Dispatch) => async (
+  action: BaseAction
 ) => {
-  if (!action.meta || !action.meta.api) {
+  if (!get('meta.api', action)) {
     return next(action);
   }
 
-  const { method, url, data, headers, onSuccess, onError } = action.payload;
+  next(action);
+  const store: AppState = getState();
+  const { idToken } = store.user;
+  const { method, url, data, onSuccess, onError } = action.payload;
+  let { headers } = action.payload;
 
-  request({ method, url, data, headers })
-    .then(({ data }) => dispatch(onSuccess(data)))
-    .catch(error => dispatch(onError(error)));
+  if (idToken) {
+    // headers = {
+    //   ...headers,
+    //   Authorization: `Bearer ${idToken}`,
+    // }
+  }
 
-  return next(action);
+  try {
+    const response = await request({ method, url, data, headers });
+    dispatch(onSuccess(response.data));
+  } catch (error) {
+    dispatch(onError(error));
+  }
 };
 
 export default apiMiddleware;

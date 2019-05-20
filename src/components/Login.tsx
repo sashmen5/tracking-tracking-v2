@@ -1,6 +1,16 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { Redirect } from 'react-router';
+// @ts-ignore
+import { useDispatch, useSelector } from 'react-redux';
+
+import { logIn } from 'store/actions';
+import { AppState } from 'store/reducers';
+import { LOGIN } from 'store/actionTypes';
+
+import { loadingValueSelector, userSelector } from 'selectors/index';
+
+import { PROJECTS } from 'constants/index';
 
 import {
   Button,
@@ -8,8 +18,8 @@ import {
   SpacedBottomInput,
   Title
 } from 'components/CommontStyledComponents';
+
 import withLoader from 'hocs/withLoader';
-import { PROJECTS } from 'constants/index';
 
 const LoginContainer = styled(Container)`
   margin: 0 auto;
@@ -26,22 +36,19 @@ const LoginWithLoader = withLoader(LoginContainer);
 const Login: FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [toHomePage, setToHomePage] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const { idToken } = useSelector((state: AppState) => userSelector(state));
+  const isLoading = useSelector((state: AppState) =>
+    loadingValueSelector(state, LOGIN)
+  );
+
+  console.log(isLoading);
 
   const handleLoginClicked = () => {
-    if (email !== 'admin' || password !== '1234') {
-      return;
-    }
-
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      setToHomePage(true);
-    }, 1000);
+    dispatch(logIn(email, password));
   };
 
-  if (toHomePage) {
+  if (idToken) {
     return <Redirect push to={PROJECTS} />;
   }
 

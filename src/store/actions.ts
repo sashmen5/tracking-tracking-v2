@@ -1,4 +1,5 @@
 import { addDays } from 'utils';
+import { baseUrl, loginUrl } from 'utils/firebaseUtil';
 import {
   ADD_PROJECT,
   ApiAction,
@@ -11,9 +12,20 @@ import {
   ProjectActions,
   SAVE_PROJECTS,
   SWITCH_START_DATE,
-  TimeTrackerActions
+  TimeTrackerActions,
+  LOGIN,
+  UserActions,
+  SAVE_USER,
+  CloseErrorAction,
+  CLOSE_ERROR
 } from 'store/actionTypes';
-import { Project } from 'models';
+
+import { Project, User } from 'models';
+import { ProjectFormValues } from 'components/ProjectForm';
+
+const projectsUrl: string = `${baseUrl}projects.json`;
+const projectUrl: (id: string) => string = (id: string) =>
+  `${baseUrl}projects/${id}.json`;
 
 export function fetchProjects(): ApiAction<Project[]> {
   return {
@@ -21,53 +33,73 @@ export function fetchProjects(): ApiAction<Project[]> {
     meta: { api: true },
     payload: {
       method: 'GET',
-      url: 'projects',
+      url: projectsUrl,
       onSuccess: saveProjects,
       onError: apiRequestError
     }
   };
 }
 
-export function addProject(label: string): ApiAction<Project> {
+export function addProject(
+  projectValues: ProjectFormValues
+): ApiAction<Project> {
   return {
     type: ADD_PROJECT,
-    meta: { api: true },
+    meta: {
+      api: true
+    },
     payload: {
       method: 'POST',
-      url: `projects`,
+      url: projectsUrl,
       onSuccess: fetchProjects,
       onError: apiRequestError,
-      data: {
-        label
-      }
+      data: projectValues
     }
   };
 }
 
-export function editProject(id: number, label: string): ApiAction<Project> {
+export function editProject(
+  id: string,
+  projectValues: ProjectFormValues
+): ApiAction<Project> {
   return {
     type: EDIT_PROJECT,
     meta: { api: true },
     payload: {
       method: 'PUT',
-      url: `projects/${id}`,
+      url: projectUrl(id),
       onSuccess: fetchProjects,
       onError: apiRequestError,
-      data: {
-        label
-      }
+      data: projectValues
     }
   };
 }
 
-export function deleteProject(id: number): ApiAction<Project> {
+export function deleteProject(id: string): ApiAction<Project> {
   return {
     type: DELETE_PROJECT,
     meta: { api: true },
     payload: {
       method: 'DELETE',
-      url: `projects/${id}`,
+      url: projectUrl(id),
       onSuccess: fetchProjects,
+      onError: apiRequestError
+    }
+  };
+}
+
+export function logIn(email: string, password: string): ApiAction<User> {
+  return {
+    type: LOGIN,
+    meta: { api: true },
+    payload: {
+      method: 'POST',
+      url: loginUrl,
+      data: {
+        email,
+        password
+      },
+      onSuccess: saveUser,
       onError: apiRequestError
     }
   };
@@ -115,11 +147,26 @@ export function saveProjects(data: Project[]): ProjectActions {
   };
 }
 
+export function saveUser(user: User): UserActions {
+  return {
+    type: SAVE_USER,
+    payload: {
+      user
+    }
+  };
+}
+
 export function apiRequestError(error: any): ProjectActions {
   return {
     type: API_ERROR_REQUEST,
     payload: {
       error
     }
+  };
+}
+
+export function closeError(): CloseErrorAction {
+  return {
+    type: CLOSE_ERROR
   };
 }

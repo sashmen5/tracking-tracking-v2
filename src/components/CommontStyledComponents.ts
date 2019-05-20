@@ -39,3 +39,12 @@ export const SpacedBottomInput = styled(Input)`
   margin-top: 0;
   margin-bottom: 15px;
 `;
+
+export const ModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  width: 300px;
+  border-radius: ${prop => prop.theme.borderRadius};
+  background-color: ${props => props.theme.colors.backgroundContainer};
+`;

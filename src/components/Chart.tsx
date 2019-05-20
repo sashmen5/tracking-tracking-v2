@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import {
   LineChart,
   Line,
@@ -91,4 +91,4 @@ const Chart: FC<ChartProps> = (props: ChartProps) => {
   );
 };
 
-export default withRouter(Chart);
+export default Chart;

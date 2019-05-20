@@ -11,6 +11,8 @@ import Projects from 'components/Projects';
 import WrongRouter from 'components/WrongRouter';
 import ProjectTracker from 'components/ProjectTracker';
 import Chart from 'components/Chart';
+import Error from 'components/Error';
+import PrivateRouter from 'components/PrivateRoute';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -31,11 +33,12 @@ const App: FC = () => {
       <ThemeProvider theme={mainTheme}>
         <Content>
           <GlobalStyle />
+          <Error />
           <Switch>
             <Route path={HOME} exact component={Login} />
-            <Route path={PROJECTS} exact component={Projects} />
-            <Route path={PROJECT} exact component={ProjectTracker} />
-            <Route path={CHART} exact component={Chart} />
+            <PrivateRouter path={PROJECTS} exact Component={Projects} />
+            <PrivateRouter path={PROJECT} exact Component={ProjectTracker} />
+            <PrivateRouter path={CHART} exact Component={Chart} />
             <Route component={WrongRouter} />
           </Switch>
         </Content>

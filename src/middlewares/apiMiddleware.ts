@@ -22,10 +22,10 @@ const apiMiddleware = ({
   let { headers } = action.payload;
 
   if (idToken) {
-    // headers = {
-    //   ...headers,
-    //   Authorization: `Bearer ${idToken}`,
-    // }
+    headers = {
+      ...headers,
+      Authorization: `Bearer ${idToken}`
+    };
   }
 
   try {
